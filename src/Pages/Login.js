@@ -1,65 +1,75 @@
-import React from 'react'
-import { Button, Text, View, StyleSheet, Image, Pressable, TextInput } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import Logo from '../../assets/Logo-sf.png'
+import React, { useState } from 'react';
+import { Button, Text, View, StyleSheet, Image, Pressable, TextInput } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Logo from '../../assets/Logo-sf.png';
 import google from '../../assets/google.png'
 import facebook from '../../assets/facebook.png'
 import apple from '../../assets/apple.png'
 
 export default function Sign(props) {
   const navigation = useNavigation();
-  const [text, onChangeText] = React.useState('Useless Text');
-  const [number, onChangeNumber] = React.useState('');
+  const { title = 'Enter' } = props;
 
-  const { title = 'Save' } = props;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <>
       <View style={styles.container}>
         <Image style={styles.image} source={Logo} />
         <Text style={styles.title}>Login to your account</Text>
 
-        <View style={styles.mainContainer}>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            value={text}
-          />
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeNumber}
-            value={number}
-            placeholder="useless placeholder"
-            keyboardType="numeric"
-          />
+        {/* Formulário de Login */}
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          placeholderTextColor="#aaaaaa"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor="#aaaaaa"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={true}
+        />
+
+        <Pressable style={styles.button} onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.textButton}>{title}</Text>
+        </Pressable>
+
+      <View style={styles.containerInfo}>
+        <View style={styles.containerLine}>
+          <View style={styles.line} />
+          <Text style={styles.textLine}>or continue with</Text>
+          <View style={styles.line} />
         </View>
 
+        <View style={styles.sites}>
+          <Image source={google} />
+          <Image source={facebook} />
+          <Image source={apple} />
+        </View>
+
+        <View>
+          <Text style={styles.account}>Don't have an account?
+            <Pressable style={styles.signUpButton} onPress={() => navigation.navigate('Sign')}>
+              <Text style={styles.textSignUp}>Sign Up</Text>
+            </Pressable></Text>
+        </View>
       </View>
-
-      <View style={styles.containerLine}>
-        <View style={styles.line} />
-        <Text style={styles.textLine}>or</Text>
-        <View style={styles.line} />
-      </View>
-
-      <Pressable style={styles.button} onPress={() => navigation.navigate('Home')}>
-        <Text style={styles.textButton}>{title}</Text>
-      </Pressable>
-
-      <View>
-        <Text style={styles.account}>Don't have an account?
-          <Pressable style={styles.signUpButton} onPress={() => navigation.navigate('Sign')}>
-            <Text style={styles.textSignUp}>Sign Up</Text>
-          </Pressable> </Text>
       </View>
     </>
-
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    // justifyContent:'center',
     alignItems: 'center',
     flex: 3,
     backgroundColor: '#000000',
@@ -74,32 +84,38 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 30,
-    color: 'white'
+    color: 'white',
+    marginBottom: 10,
+  },
+
+  input: {
+    width: '80%',
+    height: 50,
+    backgroundColor: '#1E1E1E',
+    color: 'white',
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    marginVertical: 10,
+    borderWidth: 1,
+    borderColor: '#444',
   },
 
   sites: {
-    flex: 0.9,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    margin: 10,
   },
 
-  options: {
-    padding: 20,
-    width: 400,
-    height: 90,
-    textAlign: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: '#1E1E1E',
-    borderRadius: 50,
-    color: 'white',
+  containerInfo: {
+    top: 50,
+    display: 'flex',
   },
 
-  // ----------------------------------------------- Or -----------------------------------------------
   containerLine: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 20
+    paddingBottom: 20,
   },
 
   line: {
@@ -114,8 +130,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  // ----------------------------------------------- Button -----------------------------------------------
-
   button: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -124,6 +138,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     elevation: 3,
     backgroundColor: 'white',
+    marginVertical: 10,
   },
 
   textButton: {
@@ -134,14 +149,15 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 
-  // ----------------------------------------------- Account  -----------------------------------------------
   account: {
     alignItems: 'center',
-    color: 'white'
+    color: 'white',
+    marginTop: 20,
   },
 
   textSignUp: {
     marginLeft: 10,
     color: 'white',
-  }
-})
+    fontWeight: 'bold',
+  },
+});

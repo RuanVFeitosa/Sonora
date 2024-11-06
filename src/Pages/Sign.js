@@ -44,7 +44,7 @@ export default function Sign(props) {
                 <View>
                     <Text style={styles.account}>Have an account? 
                         <Pressable style={styles.signUpButton} onPress={() => navigation.navigate('Login')}>
-                        <Text style={styles.textSignUp}>Sign Up</Text>
+                        <Text style={styles.textSignUp}>Login</Text>
                     </Pressable> </Text>
                 </View>
             </View>
@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
 
     // ----------------------------------------------- Account  -----------------------------------------------
     account: {
+        margin: 10,
         alignItems: 'center',
         color: 'white'
     },
