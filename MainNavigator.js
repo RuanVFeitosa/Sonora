@@ -17,10 +17,10 @@ export default function MainNavigator() {
     <NavigationContainer >
       <Stack.Navigator initialRouteName="Sign"> 
         <Stack.Screen name="Welcome" component={ Welcome } options={{headerShown: false}} />
-        <Stack.Screen name="Home" component={ Home } />
+        <Stack.Screen name="Home" component={ Home } options={{headerShown: false}}/>
         <Stack.Screen name='Sign' component={ Sign } options={{headerShown: false}} />
         <Stack.Screen name='Player' component={ Player } />
-        <Stack.Screen name='Login' component={ Login } />
+        <Stack.Screen name='Login' component={ Login } options={{headerShown: false}}/>
         <Stack.Screen name='Fav' component={ Fav } />
         <Stack.Screen name='Profile' component={ Profile } />
       </Stack.Navigator>

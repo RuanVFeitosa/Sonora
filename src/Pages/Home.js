@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native'
 
 export default function Home() {
   return (
-    <View>Hello World</View>
+    <View>
+      <Text>Home Screen</Text>
+    </View>
   )
 }
