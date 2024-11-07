@@ -8,6 +8,7 @@ import Player from './src/Pages/Player';
 import Fav from './src/Pages/Favorites'
 import Profile from './src/Pages/Profile'
 import Welcome from './src/Pages/Welcome';
+import Search from './src/Pages/Search'
 
 // import Faq from './src/Pages/Faq';
 
