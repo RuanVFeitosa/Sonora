@@ -21,7 +21,7 @@ const ListItem = ({ item }) => {
   );
 };
 
-export default function Home(props) {
+export default function Explore(props) {
   const { title = 'Enter' } = props;
 
   return (

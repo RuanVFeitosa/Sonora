@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, ScrollView } from 'react-native';
 
 export default function Profile() {
   return (
-    <div>Profile</div>
+    <View>
+      <Text>Player</Text>
+    </View>
   )
 }
