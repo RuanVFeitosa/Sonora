@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, ScrollView, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+
 import profile from '../../assets/Profile.png';
 import notify from '../../assets/notify.png';
 import settings from '../../assets/settings.png';
+import gato from '../../assets/gato.jpg';
+
 import c1 from '../../assets/c1.png'
 
 const ListItem = ({ item }) => {
@@ -22,33 +26,38 @@ const ListItem = ({ item }) => {
 };
 
 export default function Home(props) {
+  const navigation = useNavigation();
   const { title = 'Enter' } = props;
 
   return (
     <ScrollView style={styles.container}>
-      <LinearGradient
+      {/* <LinearGradient
         colors={['#06A0B5', '#102B2D', 'black']}
         style={{ height: '100%', width: '100%', flex: 0.5, opacity: 50, }}
-        start={{ x: 0.5, y: 0.6 }}>
-        <View style={styles.header}>
-          <Image style={styles.profile} source={profile} />
-          <View style={styles.textContainer}>
-            <Text style={styles.welcome}>Welcome Back!</Text>
-            <Text style={styles.name}>Taylor Swift</Text>
-          </View>
-          <Image style={styles.notify} source={notify} />
-          <Image style={styles.settings} source={settings} />
+        start={{ x: 0.5, y: 0.6 }}> */}
+      <View style={styles.header}>
+        <Image style={styles.profile} source={profile} />
+        <View style={styles.textContainer}>
+          <Text style={styles.welcome}>Welcome Back!</Text>
+          <Text style={styles.name}>Taylor Swift</Text>
         </View>
-      </LinearGradient>
+
+        <Pressable onPress={() => navigation.navigate('Settings')}>
+          <Image style={styles.settings} source={settings} />
+        </Pressable>
+      </View>
+      {/* </LinearGradient> */}
 
       <Text style={styles.cl}>Continue Listening</Text>
 
       <View style={styles.cards}>
         {/* Coluna da esquerda */}
         <View style={styles.column}>
-          <View style={styles.cd1}>
-            <Image style={styles.imgc1} source={c1} />
-            <Text style={styles.textc1}>Coffee</Text>
+          <View>
+            <Pressable onPress={() => navigation.navigate('Playlist')} style={styles.cd1}>
+              <Image style={styles.imgc1} source={gato} />
+              <Text style={styles.textc1}>Gym Cat</Text>
+            </Pressable>
           </View>
           <View style={styles.cd1}>
             <Image style={styles.imgc1} source={c1} />
@@ -259,7 +268,7 @@ const styles = StyleSheet.create({
 
   cl: {
     color: 'white',
-    fontWeight:'bold',
+    fontWeight: 'bold',
     fontSize: 20,
     top: 60,
     marginBottom: 20,
@@ -290,7 +299,9 @@ const styles = StyleSheet.create({
   },
 
   imgc1: {
-    borderRadius:10,
+    width: 53,
+    height: 54,
+    borderRadius: 10,
     left: 2,
   },
 
@@ -304,7 +315,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0000',
   },
-  
+
   sectionHeader: {
     fontWeight: '800',
     fontSize: 18,
