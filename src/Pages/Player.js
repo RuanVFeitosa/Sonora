@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Slider from '@react-native-community/slider';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import seta from '../../assets/seta-e.png';
 import options from '../../assets/options.png';
-import slipknot from '../../assets/slipknot.jpg'; 
+import slipknot from '../../assets/slipknot.jpg';
 
 export default function Player() {
+  const navigation = useNavigation();
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(180); // duração em segundos (3 minutos)
@@ -37,10 +41,15 @@ export default function Player() {
   return (
     <View style={styles.container}>
       <View style={styles.opcao}>
+        <Pressable onPress={() => navigation.navigate('Playlist')} >
+          <Image source={seta} />
+        </Pressable >
         <Text style={styles.title}>PLAYING FROM PLAYLIST</Text>
-        <Text style={styles.subtitle}>Gym Cat</Text>
-        <Image source={options} />
+        <Pressable onPress={() => navigation.navigate('Menu')}>
+          <Image source={options} />
+        </Pressable>
       </View>
+      <Text style={styles.subtitle}>Gym Cat</Text>
 
       <View style={styles.titleContainer}>
         <Image style={styles.playlist} source={slipknot} />
@@ -55,9 +64,9 @@ export default function Player() {
           maximumValue={duration}
           value={currentTime}
           onValueChange={setCurrentTime}
-          minimumTrackTintColor="#1DB954"
+          minimumTrackTintColor="#06A0B5"
           maximumTrackTintColor="#ccc"
-          thumbTintColor="#1DB954"
+          thumbTintColor="#06A0B5"
         />
         <View style={styles.timeContainer}>
           <Text style={styles.time}>{formatTime(currentTime)}</Text>
@@ -70,7 +79,7 @@ export default function Player() {
           <Icon name="play-skip-back-outline" size={40} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity onPress={togglePlayPause}>
-          <Icon name={isPlaying ? "pause-circle-outline" : "play-circle-outline"} size={80} color="#1DB954" />
+          <Icon name={isPlaying ? "pause-circle-outline" : "play-circle-outline"} size={80} color="#06A0B5" />
         </TouchableOpacity>
         <TouchableOpacity>
           <Icon name="play-skip-forward-outline" size={40} color="#fff" />
@@ -106,16 +115,20 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 24,
+    fontSize: 10,
     color: 'white',
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 12,
     color: '#06A0B5',
+    // alignContent: 'center',
+    // alignItems: 'center',
+    alignSelf: 'center',
+    bottom: 30,
   },
 
   name: {
-    fontSize:24,
+    fontSize: 24,
     color: 'white'
   },
 
@@ -130,10 +143,12 @@ const styles = StyleSheet.create({
   progressBarContainer: {
     width: '80%',
     alignSelf: 'center',
+    color: '#06A0B5'
   },
 
   progressBar: {
     height: 40,
+    color: '#06A0B5'
   },
 
   timeContainer: {
@@ -145,7 +160,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#888',
   },
-  
+
   controlsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',

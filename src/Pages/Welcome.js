@@ -9,7 +9,7 @@ export default function Welcome() {
 
     return (
         <>
-            <Image style={ styles.image } source={ imagez } />
+            <Image style={ styles.image } source={ image} />
             <View style={styles.container}>
                 <Text style={styles.text}>From the latest to the greatest hits, play your favorite tracks onmusium now!</Text>
                 <Button style={styles.button} title="Get Started" onPress={() => navigation.navigate('Sign')}/>
