@@ -31,10 +31,10 @@ export default function Home(props) {
 
   return (
     <ScrollView style={styles.container}>
-      {/* <LinearGradient
+      <LinearGradient
         colors={['#06A0B5', '#102B2D', 'black']}
         style={{ height: '100%', width: '100%', flex: 0.5, opacity: 50, }}
-        start={{ x: 0.5, y: 0.6 }}> */}
+        start={{ x: 0.5, y: 0.6 }}> 
       <View style={styles.header}>
         <Image style={styles.profile} source={profile} />
         <View style={styles.textContainer}>
@@ -46,7 +46,7 @@ export default function Home(props) {
           <Image style={styles.settings} source={settings} />
         </Pressable>
       </View>
-      {/* </LinearGradient> */}
+      </LinearGradient> 
 
       <Text style={styles.cl}>Continue Listening</Text>
 
