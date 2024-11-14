@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -10,11 +11,12 @@ import gato from '../../assets/gato.jpg';
 import c1 from '../../assets/c1.png'
 
 export default function Profile() {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Text style={styles.title}> My Profile </Text>
       <Pressable style={styles.edit}>
-        <Icon style={styles.editIcon} name='pencil'/>
+        <Icon style={styles.editIcon} name='pencil' />
         <Text style={styles.editText}>Edit</Text>
       </Pressable>
       <Image style={styles.profile} source={profile} />
@@ -24,15 +26,17 @@ export default function Profile() {
       </View>
       <View style={styles.cards}>
         <View style={styles.column}>
-          <View>
-            <Pressable onPress={() => navigation.navigate('Playlist')} style={styles.cd1}>
-              <Icon name="heart" size={20} color={'white'} />
+          <View style={styles.cd1}>
+            <Pressable onPress={() => navigation.navigate('Fav')}>
+              <Icon name="heart" size={20} color={'white'} left={40}/>
               <Text style={styles.textc1}>Favorites</Text>
             </Pressable>
           </View>
-          <View style={styles.cd1}>
-            <Icon  name="musical-notes"size={20} color={'white'}/>
-            <Text style={styles.textc1}>Playlist</Text>
+          <View style={styles.cd2}>
+            <Pressable onPress={() => navigation.navigate('Notif')}>
+            <Icon name="musical-notes" size={20} color={'white'} left={35} />
+            <Text style={styles.textc2}>Playlist</Text>
+            </Pressable>
           </View>
         </View>
 
@@ -67,12 +71,14 @@ const styles = StyleSheet.create({
   },
 
   editIcon: {
-    fontSize: 20,
+    left: 5,
+    top: 4,
+    fontSize: 22,
     position: 'absolute'
   },
 
   editText: {
-    left: 10,
+    left: 20,
     color: 'black'
   },
 
@@ -81,7 +87,7 @@ const styles = StyleSheet.create({
     height: 116,
     top: 140,
     left: 140,
-    borderRadius: 100,
+    borderRadius: 50,
     marginRight: 10,
   },
 
@@ -157,11 +163,30 @@ const styles = StyleSheet.create({
   cd1: {
     display: 'flex',
     alignItems: 'center',
+    alignSelf: 'center',
     width: 100,
     margin: 20,
     flexDirection: 'row',
     height: 70,
-    top: 150,
+    top: 130,
+    borderRadius: 12,
+    // left: 10,
+
+    backgroundColor: '#000000',
+    borderWidth: 1,
+    borderColor: 'white',
+    marginTop: 46,
+  },
+  
+  cd2: {
+    display: 'flex',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: 100,
+    margin: 20,
+    flexDirection: 'row',
+    height: 70,
+    top: 130,
     borderRadius: 12,
     // left: 10,
 
@@ -180,7 +205,12 @@ const styles = StyleSheet.create({
 
   textc1: {
     color: 'white',
-    left: 1
+    left: 20
+  },
+
+  textc2: {
+    color: 'white',
+    left: 25
   },
 
 

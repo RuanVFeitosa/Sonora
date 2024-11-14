@@ -32,21 +32,21 @@ export default function Home(props) {
   return (
     <ScrollView style={styles.container}>
       <LinearGradient
-        colors={['#06A0B5', '#102B2D', 'black']}
-        style={{ height: '100%', width: '100%', flex: 0.5, opacity: 50, }}
-        start={{ x: 0.5, y: 0.6 }}> 
-      <View style={styles.header}>
-        <Image style={styles.profile} source={profile} />
-        <View style={styles.textContainer}>
-          <Text style={styles.welcome}>Welcome Back!</Text>
-          <Text style={styles.name}>Taylor Swift</Text>
-        </View>
+        colors={['#06A0B5', '#06A0B5', '#102B2D', 'black', 'black']}
+        style={{ height: 160, width: '100%', flex: 0.5, opacity: 50, }}
+        start={{ x: 0.5, y: 0.10 }}>
+        <View style={styles.header}>
+          <Image style={styles.profile} source={profile} />
+          <View style={styles.textContainer}>
+            <Text style={styles.welcome}>Welcome Back!</Text>
+            <Text style={styles.name}>Taylor Swift</Text>
+          </View>
 
-        <Pressable onPress={() => navigation.navigate('Settings')}>
+          {/* <Pressable onPress={() => navigation.navigate('Settings')}>
           <Image style={styles.settings} source={settings} />
-        </Pressable>
-      </View>
-      </LinearGradient> 
+        </Pressable> */}
+        </View>
+      </LinearGradient>
 
       <Text style={styles.cl}>Continue Listening</Text>
 
@@ -99,7 +99,11 @@ export default function Home(props) {
                 <FlatList
                   horizontal
                   data={section.data}
-                  renderItem={({ item }) => <ListItem item={item} />}
+                  renderItem={({ item }) => (
+                    <Pressable onPress={() => navigation.navigate('Playlist')}>
+                      <ListItem item={item} />
+                    </Pressable>
+                  )}
                   showsHorizontalScrollIndicator={false}
                 />
               </>
@@ -111,6 +115,7 @@ export default function Home(props) {
           />
         </SafeAreaView>
       </View>
+
     </ScrollView>
 
   );
@@ -270,7 +275,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 20,
-    top: 60,
+    bottom: 30,
     marginBottom: 20,
   },
 
@@ -278,6 +283,7 @@ const styles = StyleSheet.create({
   cards: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    bottom: 70,
   },
   column: {
     flex: 1,
@@ -314,6 +320,7 @@ const styles = StyleSheet.create({
   containerCard: {
     flex: 1,
     backgroundColor: '#0000',
+    bottom: 40
   },
 
   sectionHeader: {

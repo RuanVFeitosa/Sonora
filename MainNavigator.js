@@ -1,5 +1,5 @@
 // MainNavigator.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/Pages/Home';
@@ -11,33 +11,30 @@ import Explore from './src/Pages/Explore';
 import Fav from './src/Pages/Favorites';
 import Profile from './src/Pages/Profile';
 import Welcome from './src/Pages/Welcome';
-// import Search from './src/Pages/Search';
 import Playlist from './src/Pages/Playlist';
-import Settings from './src/Pages/Settings';
 import Menu from './src/Pages/Menu';
 import NavigationBar from './src/Components/navigationBar';
 
 const Stack = createNativeStackNavigator();
 
 export default function MainNavigator() {
-  const [currentScreen, setCurrentScreen] = useState('Home');
+  const [currentScreen, setCurrentScreen] = useState('Welcome'); // Define a tela inicial como "Welcome"
 
   const screensWithoutNavBar = [
     'Welcome',
-    'Login',
     'Sign',
-    'Playlist',
+    'Login',
+    'Player',
     'Settings',
-    'Fav',
-    'Player'
   ];
 
   return (
     <NavigationContainer
       onStateChange={(state) => {
-        // Atualiza a tela atual toda vez que a navegação muda
-        const currentRoute = state.routes[state.index];
-        setCurrentScreen(currentRoute.name);
+        if (state) {
+          const route = state.routes[state.index];
+          setCurrentScreen(route.name);
+        }
       }}
     >
       <Stack.Navigator
@@ -56,15 +53,13 @@ export default function MainNavigator() {
         <Stack.Screen name="Playlist" component={Playlist} />
         <Stack.Screen name="Fav" component={Fav} />
         <Stack.Screen name="Profile" component={Profile} />
-        {/* <Stack.Screen name="Search" component={Search} /> */}
-        <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="Menu" component={Menu} />
       </Stack.Navigator>
 
-      {/* Condicional para exibir a NavigationBar */}
-      {!screensWithoutNavBar.includes(currentScreen) && (
+      {/* Exibe a NavigationBar apenas se a tela atual não estiver em `screensWithoutNavBar` */}
+      {!screensWithoutNavBar.includes(currentScreen) ? (
         <NavigationBar currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} />
-      )}
+      ) : null}
     </NavigationContainer>
   );
 }
