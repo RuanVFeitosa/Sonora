@@ -1,18 +1,17 @@
 // MainNavigator.js
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/Pages/Home';
 import Sign from './src/Pages/Sign';
 import Login from './src/Pages/Login';
 import Player from './src/Pages/Player';
-import Library from './src/Pages/Profile';
+import Library from './src/Pages/Library';
 import Explore from './src/Pages/Explore';
 import Fav from './src/Pages/Favorites';
 import Profile from './src/Pages/Profile';
 import Welcome from './src/Pages/Welcome';
-import Search from './src/Pages/Explore';
+// import Search from './src/Pages/Search';
 import Playlist from './src/Pages/Playlist';
 import Settings from './src/Pages/Settings';
 import Menu from './src/Pages/Menu';
@@ -34,9 +33,15 @@ export default function MainNavigator() {
   ];
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      onStateChange={(state) => {
+        // Atualiza a tela atual toda vez que a navegação muda
+        const currentRoute = state.routes[state.index];
+        setCurrentScreen(currentRoute.name);
+      }}
+    >
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Welcome"
         screenOptions={{
           headerShown: false,
         }}
@@ -51,7 +56,7 @@ export default function MainNavigator() {
         <Stack.Screen name="Playlist" component={Playlist} />
         <Stack.Screen name="Fav" component={Fav} />
         <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="Search" component={Search} />
+        {/* <Stack.Screen name="Search" component={Search} /> */}
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="Menu" component={Menu} />
       </Stack.Navigator>

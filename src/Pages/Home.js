@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, Secti
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
-import profile from '../../assets/Profile.png';
+import profile from '../../assets/Taylor.png';
 import notify from '../../assets/notify.png';
 import settings from '../../assets/settings.png';
 import gato from '../../assets/gato.jpg';

@@ -16,7 +16,6 @@ export default function Sign(props) {
   return (
     <>
       <View style={styles.container}>
-        <Image style={styles.image} source={Logo} />
         <Text style={styles.title}>Login to your account</Text>
 
         {/* Formulário de Login */}
@@ -86,6 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: 'white',
     marginBottom: 10,
+    top: 200,
   },
 
   input: {
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 10,
     borderWidth: 1,
+    top: 200,
     borderColor: '#444',
   },
 
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
   },
 
   containerInfo: {
-    top: 50,
+    top: 220,
     display: 'flex',
   },
 
@@ -139,6 +140,8 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: 'white',
     marginVertical: 10,
+    top: 200,
+
   },
 
   textButton: {

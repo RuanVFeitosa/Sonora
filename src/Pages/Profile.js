@@ -27,12 +27,12 @@ export default function Profile() {
           <View>
             <Pressable onPress={() => navigation.navigate('Playlist')} style={styles.cd1}>
               <Icon name="heart" size={20} color={'white'} />
-              <Text style={styles.textc1}>Gym Cat</Text>
+              <Text style={styles.textc1}>Favorites</Text>
             </Pressable>
           </View>
           <View style={styles.cd1}>
-
-            <Text style={styles.textc1}>Coffee</Text>
+            <Icon  name="musical-notes"size={20} color={'white'}/>
+            <Text style={styles.textc1}>Playlist</Text>
           </View>
         </View>
 
