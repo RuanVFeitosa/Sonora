@@ -6,6 +6,7 @@ import seta from '../../assets/seta-e.png';
 import options from '../../assets/options.png';
 import slipknot from '../../assets/slipknot.jpg'; // Capa de exemplo
 import gato from '../../assets/gato.jpg';
+import MusicPlaylist from '../Components/MusicPlaylist';
 
 const musicData = [
   { id: '1', title: 'Custer', artist: 'Slipknot', cover: slipknot },
@@ -33,19 +34,15 @@ export default function Favorites() {
         <View style={styles.line} />
       </View>
       <View style={styles.musics}>
-        <Pressable onPress={() => navigation.navigate('Player')}>
-          {musicData.map((music) => (
-            <View key={music.id} style={styles.list}>
-              <Image style={styles.capa} source={music.cover} />
-              <View style={styles.musicInfo}>
-                <Text style={styles.musicTitle}>{music.title}</Text>
-                <Text style={styles.artist}>{music.artist}</Text>
-              </View>
-
-              <Image source={options} />
-            </View>
-          ))}
-        </Pressable>
+        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
       </View>
     </ScrollView>
   );

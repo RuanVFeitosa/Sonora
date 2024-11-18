@@ -20,12 +20,12 @@ import share from '../../assets/share.png'
 import code from '../../assets/music-note-2.png'
 
 
-export default function Menu() {
+export default function Menu(props) {
     const navigation = useNavigation();
     return (
         <ScrollView style={styles.container}>
             <View style={styles.opcao}>
-                <Pressable onPress={() => navigation.navigate('Player')} >
+                <Pressable onPress={() => navigation.navigate('Playlist')} >
                     <Image source={seta} />
                 </Pressable>
             </View>

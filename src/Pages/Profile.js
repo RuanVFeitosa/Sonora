@@ -9,6 +9,8 @@ import settings from '../../assets/settings.png';
 import gato from '../../assets/gato.jpg';
 
 import c1 from '../../assets/c1.png'
+import CardProfile from '../Components/CardProfile';
+import CardHome from '../Components/CardHome';
 
 export default function Profile() {
   const navigation = useNavigation();
@@ -26,18 +28,12 @@ export default function Profile() {
       </View>
       <View style={styles.cards}>
         <View style={styles.column}>
-          <View style={styles.cd1}>
-            <Pressable onPress={() => navigation.navigate('Fav')}>
-              <Icon name="heart" size={20} color={'white'} left={40}/>
-              <Text style={styles.textc1}>Favorites</Text>
-            </Pressable>
-          </View>
-          <View style={styles.cd2}>
-            <Pressable onPress={() => navigation.navigate('Notif')}>
-            <Icon name="musical-notes" size={20} color={'white'} left={35} />
-            <Text style={styles.textc2}>Playlist</Text>
-            </Pressable>
-          </View>
+
+          <CardProfile title={"Favorites"} icon={"heart"} pressable={"Fav"} />
+          <CardProfile title={"Playlist"} icon={"musical-notes"} pressable={"Fav"} />
+          <CardProfile title={"New Playlist"} icon={"add"} pressable={"Create Playlist"} />
+
+
         </View>
 
       </View>
@@ -141,78 +137,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     top: 60,
-
-  },
-
-  information: {
-
   },
 
   cards: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+
   column: {
-    flex: 1,
+    // flex: 3,
+    marginTop: 120,
     flexDirection: 'row',
-    alignItems: 'center',
+    // alignSelf: 'center',
     justifyContent: 'space-between',
-    padding: 50,
+    // padding: 10,
   },
-
-  cd1: {
-    display: 'flex',
-    alignItems: 'center',
-    alignSelf: 'center',
-    width: 100,
-    margin: 20,
-    flexDirection: 'row',
-    height: 70,
-    top: 130,
-    borderRadius: 12,
-    // left: 10,
-
-    backgroundColor: '#000000',
-    borderWidth: 1,
-    borderColor: 'white',
-    marginTop: 46,
-  },
-  
-  cd2: {
-    display: 'flex',
-    alignItems: 'center',
-    alignSelf: 'center',
-    width: 100,
-    margin: 20,
-    flexDirection: 'row',
-    height: 70,
-    top: 130,
-    borderRadius: 12,
-    // left: 10,
-
-    backgroundColor: '#000000',
-    borderWidth: 1,
-    borderColor: 'white',
-    marginTop: 46,
-  },
-
-  imgc1: {
-    width: 53,
-    height: 54,
-    borderRadius: 10,
-    left: 2,
-  },
-
-  textc1: {
-    color: 'white',
-    left: 20
-  },
-
-  textc2: {
-    color: 'white',
-    left: 25
-  },
-
-
 
 })

@@ -9,6 +9,7 @@ import settings from '../../assets/settings.png';
 import gato from '../../assets/gato.jpg';
 
 import c1 from '../../assets/c1.png'
+import CardHome from '../Components/CardHome';
 
 const ListItem = ({ item }) => {
   return (
@@ -48,42 +49,20 @@ export default function Home(props) {
         </View>
       </LinearGradient>
 
-      <Text style={styles.cl}>Continue Listening</Text>
+      <Text style={styles.cl}>Your Playlist</Text>
 
       <View style={styles.cards}>
         {/* Coluna da esquerda */}
         <View style={styles.column}>
-          <View>
-            <Pressable onPress={() => navigation.navigate('Playlist')} style={styles.cd1}>
-              <Image style={styles.imgc1} source={gato} />
-              <Text style={styles.textc1}>Gym Cat</Text>
-            </Pressable>
-          </View>
-          <View style={styles.cd1}>
-            <Image style={styles.imgc1} source={c1} />
-            <Text style={styles.textc1}>Coffee</Text>
-          </View>
-          <View style={styles.cd1}>
-            <Image style={styles.imgc1} source={c1} />
-            <Text style={styles.textc1}>Coffee</Text>
-          </View>
+          <CardHome title={"Linkin Park"} image = {"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoNIT2bft_ZeRdkA1e3GXGn8eSAKpVaLN0ew&s"} />
         </View>
 
         {/* Coluna da direita */}
-        <View style={styles.column}>
-          <View style={styles.cd1}>
-            <Image style={styles.imgc1} source={c1} />
-            <Text style={styles.textc1}>Coffee</Text>
-          </View>
-          <View style={styles.cd1}>
-            <Image style={styles.imgc1} source={c1} />
-            <Text style={styles.textc1}>Coffee</Text>
-          </View>
-          <View style={styles.cd1}>
-            <Image style={styles.imgc1} source={c1} />
-            <Text style={styles.textc1}>Coffee</Text>
-          </View>
-        </View>
+        {/* <View style={styles.column}>
+          <CardHome title={"Coffee"} />
+          <CardHome title={"Coffee"} />
+          <CardHome title={"Coffee"} />
+        </View> */}
       </View>
 
       <View style={styles.containerCard}>
@@ -286,9 +265,11 @@ const styles = StyleSheet.create({
     bottom: 70,
   },
   column: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
+    // display: 'grid',
+    // flex: 1,
+    flexDirection: 'row',
+    // alignItems: 'center',
+    flexWrap: 'wrap'
   },
 
   cd1: {

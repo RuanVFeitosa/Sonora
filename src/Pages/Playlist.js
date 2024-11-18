@@ -7,14 +7,15 @@ import gato from '../../assets/gato.jpg';
 import seta from '../../assets/seta-e.png';
 import options from '../../assets/options.png';
 import slipknot from '../../assets/slipknot.jpg'; // Capa de exemplo
+import MusicPlaylist from '../Components/MusicPlaylist';
 
-const musicData = [
-    { id: '1', title: 'Custer', artist: 'Slipknot', cover: slipknot },
-    { id: '2', title: 'Música 2', artist: 'Artista 2', cover: slipknot },
-    { id: '3', title: 'Música 3', artist: 'Artista 3', cover: slipknot }, 
-    { id: '4', title: 'Música 4', artist: 'Artista 3', cover: slipknot }, 
+// const musicData = [
+//     { id: '1', title: 'Custer', artist: 'Slipknot', cover: slipknot },
+//     { id: '2', title: 'Música 2', artist: 'Artista 2', cover: slipknot },
+//     { id: '3', title: 'Música 3', artist: 'Artista 3', cover: slipknot }, 
+//     { id: '4', title: 'Música 4', artist: 'Artista 3', cover: slipknot }, 
     // Adicione mais músicas conforme necessário
-];
+// ];
 
 export default function Playlist() {
     const navigation = useNavigation();
@@ -36,19 +37,16 @@ export default function Playlist() {
             </View>
 
             <View style={styles.musics}>
-                <Pressable onPress={() => navigation.navigate('Player')}>
-                {musicData.map((music) => (
-                    <View key={music.id} style={styles.list}>
-                        <Image style={styles.capa} source={music.cover} />
-                        <View style={styles.musicInfo}>
-                            <Text style={styles.musicTitle}>{music.title}</Text>
-                            <Text style={styles.artist}>{music.artist}</Text>
-                        </View>
-                        
-                        <Image source={options} />
-                    </View>
-                ))}
-                </Pressable>
+                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+               
             </View>
         </ScrollView>
     );
