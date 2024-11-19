@@ -34,7 +34,7 @@ export default function Home(props) {
     <ScrollView style={styles.container}>
       <LinearGradient
         colors={['#06A0B5', '#06A0B5', '#102B2D', 'black', 'black']}
-        style={{ height: 160, width: '100%', flex: 0.5, opacity: 50, }}
+        style={{ height: 160, width: '100%', opacity: 50, }}
         start={{ x: 0.5, y: 0.10 }}>
         <View style={styles.header}>
           <Image style={styles.profile} source={profile} />
@@ -54,7 +54,8 @@ export default function Home(props) {
       <View style={styles.cards}>
         {/* Coluna da esquerda */}
         <View style={styles.column}>
-          <CardHome title={"Linkin Park"} image = {"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoNIT2bft_ZeRdkA1e3GXGn8eSAKpVaLN0ew&s"} />
+          <CardHome title={"Gym Cat"} source={gato} pressable={'Playlist'}/>
+          <CardHome title={"From Zero"} image = {"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoNIT2bft_ZeRdkA1e3GXGn8eSAKpVaLN0ew&s"} />
         </View>
 
         {/* Coluna da direita */}
