@@ -40,7 +40,7 @@ export default function MainNavigator() {
       }}
     >
       <Stack.Navigator
-        initialRouteName="Welcome"
+        initialRouteName="Login"
         screenOptions={{
           headerShown: false,
         }}
