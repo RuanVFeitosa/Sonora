@@ -20,6 +20,7 @@ export default function Welcome() {
 
 const styles = StyleSheet.create({
     container: {
+        width: '100%',
         height: 500, 
         padding: 50,
         top: 400,

@@ -15,6 +15,7 @@ import Playlist from './src/Pages/Playlist';
 import Menu from './src/Pages/Menu';
 import NavigationBar from './src/Components/navigationBar';
 import CreatePlaylist from './src/Pages/CreatePlaylist';
+import Edit from './src/Pages/Edit';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +28,8 @@ export default function MainNavigator() {
     'Login',
     'Player',
     'Settings',
-    'Create Playlist'
+    'Create Playlist',
+    'Edit'
   ];
 
   return (
@@ -57,6 +59,7 @@ export default function MainNavigator() {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Menu" component={Menu} />
         <Stack.Screen name="Create Playlist" component={CreatePlaylist} />
+        <Stack.Screen name="Edit" component={Edit} />
       </Stack.Navigator>
 
       {/* Exibe a NavigationBar apenas se a tela atual não estiver em `screensWithoutNavBar` */}

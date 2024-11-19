@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, ScrollView, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import c1 from '../../assets/c1.png'
 export default function CardHome(props) {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.cards}>
       {/* Coluna da esquerda */}
       <View style={styles.column}>
-        <View style={styles.cd1}>
-          <Image style={styles.imgc1} src={props.image} />
-          <Text style={styles.textc1}>{props.title}</Text>
-        </View>
+        <Pressable onPress={() => navigation.navigate(props.pressable)}>
+          <View style={styles.cd1}>
+            <Image style={styles.imgc1} src={props.image} source={props.source} />
+            <Text style={styles.textc1}>{props.title}</Text>
+          </View>
+        </Pressable>
       </View>
     </View>
   )
