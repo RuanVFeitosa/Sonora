@@ -48,7 +48,7 @@ export default function Sign(props) {
       };
 
       // Fazendo a requisição na API para fazer o login
-      const response = await axios.post('http://192.168.56.1:7050/user/login', data, {'Content-Type': 'application/json'} );
+      const response = await axios.post('http://192.168.15.8:7050/user/login', data, {'Content-Type': 'application/json'} );
       
       // Armazenando o token
       await AsyncStorage.setItem('token', response.data.login);
@@ -65,7 +65,7 @@ export default function Sign(props) {
       } else if (error.request) {
         console.error(error.request);
       } else {
-        console.error('Error', error.message);
+        console.error('Erroor', error.message);
       }
       console.error(error.config);
     
@@ -104,7 +104,7 @@ export default function Sign(props) {
         </Pressable>
     
         <View style={styles.containerInfo}>
-        <Text style={styles.msgErroOculta} >Erro valide seus dados</Text>
+        
 
           <View style={styles.containerLine}>
             <View style={styles.line} />
@@ -123,7 +123,7 @@ export default function Sign(props) {
               Don't have an account?
               <Pressable
                 style={styles.signUpButton}
-                onPress={() => console.log("clicou")}
+                onPress={() => navigation.navigate('Sign')}
               >
                 <Text style={styles.textSignUp}>Sign Up</Text>
               </Pressable>

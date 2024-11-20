@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, ScrollView, Pressable } from 'react-native';
 import seta from '../../assets/seta-e.png';
@@ -18,6 +19,31 @@ const musicData = [
 
 export default function Favorites() {
   const navigation = useNavigation();
+
+  const [id,setId] = useState("");
+  const [token,setToken] = useState("");
+
+  const getMusicasFavoritas = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+
+      setToken(token);
+    } catch (error) {
+      // Tratando os erros
+      if (error.response) {
+        console.log("data", error.response.data.msg);
+        // Adicionando a mensagem de erro na tela
+        // createTwoButtonAlert(error.response.data.msg);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+      } else if (error.request) {
+        console.error(error.request);
+      } else {
+        console.error("Erroeor", error.message);
+      }
+      console.error(error.config);
+    }
+  }
 
 
   return (
