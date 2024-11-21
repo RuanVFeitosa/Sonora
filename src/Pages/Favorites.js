@@ -8,6 +8,7 @@ import options from '../../assets/options.png';
 import slipknot from '../../assets/slipknot.jpg'; // Capa de exemplo
 import gato from '../../assets/gato.jpg';
 import MusicPlaylist from '../Components/MusicPlaylist';
+import axios from 'axios';
 
 const musicData = [
   { id: '1', title: 'Custer', artist: 'Slipknot', cover: slipknot },
@@ -22,14 +23,28 @@ export default function Favorites() {
 
   const [id,setId] = useState("");
   const [token,setToken] = useState("");
+  const [musica,setMusica] = useState([]);
+  
 
   const getMusicasFavoritas = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
 
       setToken(token);
+
+      console.log(token);
+
+      const response = await axios.get("http://192.168.15.8:7050/musicfavorita/", {headers : {'Authorization' : token}});
+
+      for(const musicaObj of response.data.musicasFavoritas){
+        musica.push(musicaObj);
+      }
+
+
+      // setMusica(response.data.musicasFavortias);
+      console.log(response.data.musicasFavoritas)
     } catch (error) {
-      // Tratando os erros
+      // Tratando os erross
       if (error.response) {
         console.log("data", error.response.data.msg);
         // Adicionando a mensagem de erro na tela
@@ -45,6 +60,10 @@ export default function Favorites() {
     }
   }
 
+  useEffect(() => {
+    getMusicasFavoritas();
+  }, []);
+
 
   return (
     <ScrollView style={styles.container}>
@@ -56,19 +75,35 @@ export default function Favorites() {
       </View>
       <View style={styles.containerLine}>
         <View style={styles.line} />
-        <Text style={styles.textLine}>20 liked songs</Text>
+        <Text style={styles.textLine}>{musica.length} liked songs</Text>
         <View style={styles.line} />
       </View>
       <View style={styles.musics}>
-        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
+
+        {/* {musica.forEach(element => {
+          console.log("elemento do array",element);
+        <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} /> 
+        
+          
+        })} */}
+
+{musica.map((element, index) => (
+  console.log(element.musica.nomeMusica),
+  <MusicPlaylist 
+    key={index} // Sempre adicione uma chave única para listas
+    title={element.musica.nomeMusica} 
+    artist={element.artist} 
+    cover={element.cover} 
+  />
+))}
+
+        
+        
+
+        {/* {musica.map((item, index) => {
+                  <Text style={styles.textLine} key={index} >{musica.length} liked songs</Text>
+
+        })} */}
       </View>
     </ScrollView>
   );
