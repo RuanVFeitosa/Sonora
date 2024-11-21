@@ -36,6 +36,7 @@ export default function Favorites() {
 
       const response = await axios.get("http://192.168.15.8:7050/musicfavorita/", {headers : {'Authorization' : token}});
 
+
       for(const musicaObj of response.data.musicasFavoritas){
         musica.push(musicaObj);
       }
@@ -50,6 +51,9 @@ export default function Favorites() {
         // Adicionando a mensagem de erro na tela
         // createTwoButtonAlert(error.response.data.msg);
         console.error(error.response.status);
+        if(error.response.status === 401){
+          navigation.navigate('Login');
+        }
         console.error(error.response.headers);
       } else if (error.request) {
         console.error(error.request);

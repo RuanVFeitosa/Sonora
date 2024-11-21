@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import * as Keychain from 'react-native-keychain';
-import  AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Keychain from "react-native-keychain";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Button,
   Text,
@@ -10,6 +10,7 @@ import {
   Pressable,
   TextInput,
   Alert,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../assets/Logo-sf.png";
@@ -25,22 +26,19 @@ export default function Sign(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
   // Função para aparecer mensagem de erro na tela
   const createTwoButtonAlert = (subTitle) =>
     Alert.alert("Erro", subTitle, [
       {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
       },
-      {text: 'OK', onPress: () => console.log('OK Pressed')},
+      { text: "OK", onPress: () => console.log("OK Pressed") },
     ]);
-  
 
   const login = async () => {
     try {
-
       // Criando variavel para armazenar os dados
       const data = {
         email: email,
@@ -48,16 +46,20 @@ export default function Sign(props) {
       };
 
       // Fazendo a requisição na API para fazer o login
-      const response = await axios.post('http://192.168.15.8:7050/user/login', data, {'Content-Type': 'application/json'} );
-      
+      const response = await axios.post(
+        "http://192.168.15.8:7050/user/login",
+        data,
+        { "Content-Type": "application/json" }
+      );
+
       // Armazenando o token
-      await AsyncStorage.setItem('token', response.data.login);
-      navigation.navigate('Home');
+      await AsyncStorage.setItem("token", response.data.login);
+      navigation.navigate("Home");
       // console.log(await AsyncStorage.getItem('token'));
     } catch (error) {
       // Tratando os erros
       if (error.response) {
-        console.log("data",error.response.data.msg);
+        console.log("data", error.response.data.msg);
         // Adicionando a mensagem de erro na tela
         createTwoButtonAlert(error.response.data.msg);
         console.error(error.response.status);
@@ -65,90 +67,105 @@ export default function Sign(props) {
       } else if (error.request) {
         console.error(error.request);
       } else {
-        console.error('Erroor', error.message);
+        console.error("Erroor", error.message);
       }
       console.error(error.config);
-    
     }
-    
   };
-
-
 
   return (
     <>
-      <View style={styles.container}>
-        <Text style={styles.title}>Login to your account</Text>
+      <ScrollView  contentContainerStyle={styles.container}>
+        <View style={styles.containerView}>
+          <Text style={styles.title}>Login to your account</Text>
 
-        {/* Formulário de Login */}
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#aaaaaa"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#aaaaaa"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={true}
-        />
+          {/* Formulário de Login */}
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#aaaaaa"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#aaaaaa"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={true}
+          />
 
-        <Pressable style={styles.button} onPress={() => login()}>
-          <Text style={styles.textButton}>{title}</Text>
-        </Pressable>
-    
-        <View style={styles.containerInfo}>
-        
+          <Pressable style={styles.button} onPress={() => login()}>
+            <Text style={styles.textButton}>{title}</Text>
+          </Pressable>
 
-          <View style={styles.containerLine}>
-            <View style={styles.line} />
-            <Text style={styles.textLine}>or continue with</Text>
-            <View style={styles.line} />
-          </View>
+          <View style={styles.containerInfo}>
+            <View style={styles.containerLine}>
+              <View style={styles.line} />
+              <Text style={styles.textLine}>or continue with</Text>
+              <View style={styles.line} />
+            </View>
 
-          <View style={styles.sites}>
-            <Image source={google} />
-            <Image source={facebook} />
-            <Image source={apple} />
-          </View>
+            <View style={styles.sites}>
+              <Image source={google} />
+              <Image source={facebook} />
+              <Image source={apple} />
+            </View>
 
-          <View>
-            <Text style={styles.account}>
-              Don't have an account?
-              <Pressable
-                style={styles.signUpButton}
-                onPress={() => navigation.navigate('Sign')}
-              >
-                <Text style={styles.textSignUp}>Sign Up</Text>
-              </Pressable>
-            </Text>
+            <View>
+              <Text style={styles.account}>
+                Don't have an account?
+                <Pressable
+                  style={styles.signUpButton}
+                  onPress={() => navigation.navigate("Sign")}
+                >
+                  <Text style={styles.textSignUp}>Sign Up</Text>
+                </Pressable>
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
+      {/* <View style={styles.container}>
+        
+      </View> */}
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  msgErroOculta : {
-    display : 'none',
+  msgErroOculta: {
+    display: "none",
     // color : 'white'
   },
-  msgErro : {
-    display : 'flex',
-    color : 'white'
+  msgErro: {
+    display: "flex",
+    color: "white",
   },
   container: {
     display: "flex",
-    alignItems: "center",
-    flex: 3,
+    // alignItems: "center",
+    justifyContent : 'center',
+    // flex: 3,
+    flex : 1,
+    // height : '100%',
     backgroundColor: "#000000",
+  },
+
+  containerView : {
+    // display : 'flex',
+    // flexGrow : 1,
+    justifyContent : 'center',
+    // alignContent : 'center',
+    alignItems: 'center',
+    // backgroundColor : 'blue',
+    height : '100%',
+    flex : 1,
+
+    // marginTop : 10
   },
 
   image: {
@@ -161,8 +178,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     color: "white",
-    marginBottom: 10,
-    top: 200,
+    // marginBottom: 10,
+    // top: 200,
   },
 
   input: {
@@ -174,7 +191,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 10,
     borderWidth: 1,
-    top: 200,
+    // top: 200,
     borderColor: "#444",
   },
 
@@ -186,14 +203,14 @@ const styles = StyleSheet.create({
   },
 
   containerInfo: {
-    top: 220,
+    // top: 220,
     display: "flex",
   },
 
   containerLine: {
     flexDirection: "row",
     alignItems: "center",
-    paddingBottom: 20,
+    // paddingBottom: 20,
   },
 
   line: {
@@ -217,7 +234,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "white",
     marginVertical: 10,
-    top: 200,
+    // top: 200,
   },
 
   textButton: {
@@ -231,11 +248,11 @@ const styles = StyleSheet.create({
   account: {
     alignItems: "center",
     color: "white",
-    marginTop: 20,
+    // marginTop: 20,
   },
 
   textSignUp: {
-    marginLeft: 10,
+    // marginLeft: 10,
     color: "white",
     fontWeight: "bold",
   },
