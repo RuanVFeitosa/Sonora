@@ -115,7 +115,7 @@ export default function Home(props) {
 
       // console.log(response.data.playlists);
 
-      console.log(playlist);
+      console.log("playlist",playlist);
 
       if (response.data.playlists.length === 0) {
         console.log("tem nenhuma playlists");
@@ -136,9 +136,9 @@ export default function Home(props) {
       console.error(error.config);
     }
   };
-
+ 
   useEffect(() => {
-    getUser();
+     getUser();
     getPlaylist();
   }, []);
 

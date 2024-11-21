@@ -72,13 +72,13 @@ export default function Playlist({ route, navigation }) {
   const getMusics = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
-      console.log(idPlaylist);
+      // console.log(idPlaylist);
     const response = await axios.get(`http://192.168.56.1:7050/playmusic/getbyplaylist/${idPlaylist}`,{ headers: { Authorization: token } });
-        console.log(response.data);
+        // console.log(response.data);
         const musicasObj = response.data.playMusic;
 
         for(const musica of musicasObj){
-            // console.log(musica);
+            // console.log("teste",musica.musica);
             musicas.push(musica);
         }
         
@@ -124,13 +124,13 @@ export default function Playlist({ route, navigation }) {
 
       <View style={styles.musics}>
         
-        {musicas.map((element, index) => (
-            console.log("element do map",element),
+        {musicas.map(async(element, index) => (
+            console.log("element do map",element.musica.artista),
              <MusicPlaylist
-          title={element.playMusic}
-          artist={"Slipknot"}
+          title={element.musica.nomeMusica}
+          artist={element.musica.artista}
           cover={
-            "https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg"
+            element.musica.imagemMusica
           }
         /> 
     ))}
