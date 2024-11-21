@@ -1,22 +1,96 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Text, View, TextInput, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, Pressable } from 'react-native';
+import { Text, View, TextInput, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, Pressable, Alert } from 'react-native';
+import axios from 'axios';
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function CreatePlaylist() {
   const navigation = useNavigation();
 
-  const [playlist, setPlaylist] = useState('');
+  const [playlistNome, setPlaylistNome] = useState('');
+  const [playlistDesc, setPlaylistDesc] = useState('');
+  const [playlistImg, setPlaylistImg] = useState('');
+
+  // Função para aparecer mensagem de erro na tela
+  const createTwoButtonAlert = (title,subTitle) =>
+    Alert.alert(title, subTitle, [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
+
+  const createPlaylist = async() => {
+    try {
+
+      const token = await AsyncStorage.getItem('token');
+      console.log(token);
+      console.log("clicou em criar")
+      const data = {
+        nome : playlistNome,
+        descricao : playlistDesc,
+        imagem : playlistImg
+      }
+
+      const response = await axios.post('http://192.168.56.1:7050/playlist/', data, {headers : {'Content-Type' : 'application/json', 'Authorization' : token}});
+      createTwoButtonAlert("Sucesso !","Playlist criada com sucesso");
+      navigation.navigate('Home');
+      console.log(response.data);
+
+      console.log(data);
+    } catch (error) {
+      // Tratando os erros
+      if (error.response) {
+        console.log("data", error.response.data.msg);
+        // Adicionando a mensagem de erro na tela
+        createTwoButtonAlert("erro",error.response.data.msg);
+        console.error(error.response.status);
+        // if(error.response.status === 401){
+        //   navigation.navigate('Login');
+        // }
+        console.error(error.response.headers);
+      } else if (error.request) {
+        console.error(error.request);
+      } else {
+        console.error("Erroor", error.message);
+      }
+      console.error(error.config);
+    }
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.newPlaylist}>New Playlist</Text>
+      
       <TextInput
         style={styles.input}
         placeholder="Give your playlist a title"
         placeholderTextColor="#8A9A9D"
-        value={playlist}
-        onChangeText={setPlaylist}
+        value={playlistNome}
+        onChangeText={setPlaylistNome}
+        keyboardType="default"
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Give your playlist a description"
+        placeholderTextColor="#8A9A9D"
+        value={playlistDesc}
+        onChangeText={setPlaylistDesc}
+        keyboardType="default"
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Give your playlist a url image"
+        placeholderTextColor="#8A9A9D"
+        value={playlistImg}
+        onChangeText={setPlaylistImg}
         keyboardType="default"
         autoCapitalize="none"
       />
@@ -27,7 +101,7 @@ export default function CreatePlaylist() {
             <Text style={styles.buttonText}>Cancel</Text>
           </Pressable>
 
-          <Pressable style={styles.buttonCreate}>
+          <Pressable style={styles.buttonCreate} onPress={() => createPlaylist()} >
             <Text style={styles.buttonText}>Create</Text>
           </Pressable>
         </View>

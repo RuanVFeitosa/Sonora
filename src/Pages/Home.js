@@ -52,6 +52,9 @@ export default function Home(props) {
   // State do Token do usuario
   const [token, setToken] = useState("teste");
 
+  // State playlist
+  const [playlist, setPlaylist] = useState([]);
+
   const getUser = async () => {
     try {
       // Pegando o token do storage
@@ -65,7 +68,7 @@ export default function Home(props) {
 
       // Pegando os dados do usuario na api
       const response = await axios.get(
-        `http://192.168.15.8:7050/user/${userId}`
+        `http://192.168.56.1:7050/user/${userId}`
       );
 
       // Criando variavel para poder manipular os dados do user
@@ -98,10 +101,21 @@ export default function Home(props) {
       // Pegando o token do storage
       const token = await AsyncStorage.getItem("token");
 
-      const response = await axios.get("http://192.168.15.8:7050/playlist/", {
+      const response = await axios.get("http://192.168.56.1:7050/playlist/", {
         headers: { Authorization: token },
       });
-      console.log(response.data);
+
+      for (const playlistObj of response.data.playlists) {
+        // if(playlist.length > 3){
+        //   return null
+        // }
+        playlist.push(playlistObj);
+      }
+      // response.data.playlists
+
+      // console.log(response.data.playlists);
+
+      console.log(playlist);
 
       if (response.data.playlists.length === 0) {
         console.log("tem nenhuma playlists");
@@ -131,49 +145,83 @@ export default function Home(props) {
   // console.log(nome)
 
   return (
-    <ScrollView style={styles.container}>
-      <LinearGradient
-        colors={["#06A0B5", "#06A0B5", "#102B2D", "black", "black"]}
-        style={{ height: 160, width: "100%", opacity: 50 }}
-        start={{ x: 0.5, y: 0.1 }}
-      >
-        <View style={styles.header}>
-          <Image style={styles.profile} source={profile} />
-          <View style={styles.textContainer}>
-            <Text style={styles.welcome}>Welcome Back!</Text>
-            <Text style={styles.name}>{nome}</Text>
-          </View>
+    <SectionList
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 80 }}
+      sections={SECTIONS}
+      stickySectionHeadersEnabled={false}
+      ListHeaderComponent={
+        <>
+          <LinearGradient
+            colors={["#06A0B5", "#06A0B5", "#102B2D", "black", "black"]}
+            style={{ height: 160, width: "100%", opacity: 50 }}
+            start={{ x: 0.5, y: 0.1 }}
+          >
+            <View style={styles.header}>
+              <Image style={styles.profile} source={profile} />
+              <View style={styles.textContainer}>
+                <Text style={styles.welcome}>Welcome Back!</Text>
+                <Text style={styles.name}>{nome}</Text>
+              </View>
 
-          {/* <Pressable onPress={() => navigation.navigate('Settings')}>
+              {/* <Pressable onPress={() => navigation.navigate('Settings')}>
           <Image style={styles.settings} source={settings} />
         </Pressable> */}
-        </View>
-      </LinearGradient>
+            </View>
+          </LinearGradient>
 
-      <Text style={styles.cl}>Your Playlist</Text>
+          <Text style={styles.cl}>Your Playlist</Text>
 
-      <View style={styles.cards}>
-        {/* Coluna da esquerda */}
-        <View style={styles.column}>
-          {/* <Text>Nenhuma playlist</Text> */}
-          {/* <CardHome title={"Gym Cat"} source={gato} pressable={"Playlist"} /> */}
-          <CardHome
+          <View style={styles.cards}>
+            {/* Coluna da esquerda */}
+            <View style={styles.column}>
+              {/* <Text>Nenhuma playlist</Text> */}
+              {/* <CardHome title={"Gym Cat"} source={gato} pressable={"Playlist"} /> */}
+              {playlist.map(
+                (element, index) => (
+                  // console.log(element.musica.nomeMusica),
+                  // console.log(element),
+                  // console.log(element._id),
+              <CardHome title={element.nome} image={element.imagem} pressable={"Playlist"} idPlaylist = {element._id}  /> 
+
+                )
+              )}
+              {/* <CardHome
             title={"From Zero"}
             image={
               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoNIT2bft_ZeRdkA1e3GXGn8eSAKpVaLN0ew&s"
             }
-          />
-        </View>
+          /> */}
+            </View>
 
-        {/* Coluna da direita */}
-        {/* <View style={styles.column}>
+            {/* Coluna da direita */}
+            {/* <View style={styles.column}>
           <CardHome title={"Coffee"} />
           <CardHome title={"Coffee"} />
           <CardHome title={"Coffee"} />
         </View> */}
-      </View>
-
-      <View style={styles.containerCard}>
+          </View>
+        </>
+      }
+      renderSectionHeader={({ section }) => (
+        <>
+          <Text style={styles.sectionHeader}>{section.title}</Text>
+          <FlatList
+            horizontal
+            data={section.data}
+            renderItem={({ item }) => (
+              <Pressable onPress={() => navigation.navigate("Playlist")}>
+                <ListItem item={item} />
+              </Pressable>
+            )}
+            keyExtractor={(item) => item.key}
+            showsHorizontalScrollIndicator={false}
+          />
+        </>
+      )}
+      renderItem={({ item }) => null}
+    >
+      {/* <View style={styles.containerCard}>
         <StatusBar style="light" />
         <SafeAreaView style={{ flex: 1 }}>
           <SectionList
@@ -201,8 +249,8 @@ export default function Home(props) {
             }}
           />
         </SafeAreaView>
-      </View>
-    </ScrollView>
+      </View> */}
+    </SectionList>
   );
 }
 

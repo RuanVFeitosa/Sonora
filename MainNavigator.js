@@ -42,19 +42,19 @@ export default function MainNavigator() {
       }}
     >
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="Home"
         screenOptions={{
           headerShown: false,
         }}
       >
-        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="Welcome" component={Welcome}  />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Sign" component={Sign} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Player" component={Player} />
         <Stack.Screen name="Library" component={Library} />
         <Stack.Screen name="Explore" component={Explore} />
-        <Stack.Screen name="Playlist" component={Playlist} />
+        <Stack.Screen name="Playlist" component={Playlist}/>
         <Stack.Screen name="Fav" component={Fav} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Menu" component={Menu} />

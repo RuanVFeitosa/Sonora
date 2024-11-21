@@ -1,132 +1,228 @@
-import React from 'react';
-import { Text, View, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  ScrollView,
+  Pressable,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
-import gato from '../../assets/gato.jpg';
-import seta from '../../assets/seta-e.png';
-import options from '../../assets/options.png';
-import slipknot from '../../assets/slipknot.jpg'; // Capa de exemplo
-import MusicPlaylist from '../Components/MusicPlaylist';
+import gato from "../../assets/gato.jpg";
+import seta from "../../assets/seta-e.png";
+import options from "../../assets/options.png";
+import slipknot from "../../assets/slipknot.jpg"; // Capa de exemplo
+import MusicPlaylist from "../Components/MusicPlaylist";
+import axios from "axios";
 
 // const musicData = [
 //     { id: '1', title: 'Custer', artist: 'Slipknot', cover: slipknot },
 //     { id: '2', title: 'Música 2', artist: 'Artista 2', cover: slipknot },
-//     { id: '3', title: 'Música 3', artist: 'Artista 3', cover: slipknot }, 
-//     { id: '4', title: 'Música 4', artist: 'Artista 3', cover: slipknot }, 
-    // Adicione mais músicas conforme necessário
+//     { id: '3', title: 'Música 3', artist: 'Artista 3', cover: slipknot },
+//     { id: '4', title: 'Música 4', artist: 'Artista 3', cover: slipknot },
+// Adicione mais músicas conforme necessário
 // ];
 
-export default function Playlist() {
-    const navigation = useNavigation();
+export default function Playlist({ route, navigation }) {
+  const navigationLink = useNavigation();
 
-    return (
-        <ScrollView style={styles.container}>
-            <View style={styles.opcao}>
-                <Pressable onPress={() => navigation.navigate('Home')} >
-                <Image source={seta} />
-                </Pressable>
-                <Text style={styles.upTitle}>FROM PLAYLIST</Text>
-                <Image source={options} />
-            </View>
-           
-            <View style={styles.titleContainer}>
-                <Image style={styles.playlist} source={gato} />
-                <Text style={styles.title}>Gym Cat</Text>
-                <Text style={styles.tags}> Phonk, Metal, NuMetal </Text>
-            </View>
+  const { idPlaylist } = route.params;
 
-            <View style={styles.musics}>
-                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-                <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} />
-               
-            </View>
-        </ScrollView>
-    );
+  const [imagePlaylist, setImagePlaylist] = useState("");
+  const [titlePlaylist, setTitlePlaylist] = useState("");
+  const [descPlaylist, setDescPlaylist] = useState("");
+
+  const [musicas, setMusicas] = useState([]);
+
+  const getPlaylist = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+
+      const response = await axios.get(
+        `http://192.168.56.1:7050/playlist/${idPlaylist}`,
+        { headers: { Authorization: token } }
+      );
+
+      const playlistObj = response.data.playlist;
+
+      setImagePlaylist(playlistObj.imagem);
+      setTitlePlaylist(playlistObj.nomePlaylist);
+      setDescPlaylist(playlistObj.descricao);
+      //   console.log(response.data);
+    } catch (error) {
+      // Tratando os erros
+      if (error.response) {
+        console.log("data", error.response.data.msg);
+        // Adicionando a mensagem de erro na tela
+        // createTwoButtonAlert(error.response.data.msg);
+        console.error(error.response.status);
+        // if(error.response.status === 401){navigationLink.navigate('Login')}
+        console.error(error.response.headers);
+      } else if (error.request) {
+        console.error(error.request);
+      } else {
+        console.error("Erroor", error.message);
+      }
+      console.error(error.config);
+    }
+  };
+
+  const getMusics = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      console.log(idPlaylist);
+    const response = await axios.get(`http://192.168.56.1:7050/playmusic/getbyplaylist/${idPlaylist}`,{ headers: { Authorization: token } });
+        console.log(response.data);
+        const musicasObj = response.data.playMusic;
+
+        for(const musica of musicasObj){
+            // console.log(musica);
+            musicas.push(musica);
+        }
+        
+      // /playmusic/getbyplaylist/
+    } catch (error) {
+      // Tratando os erros
+      if (error.response) {
+        console.log("data", error.response.data.msg);
+        // Adicionando a mensagem de erro na tela
+        // createTwoButtonAlert(error.response.data.msg);
+        console.error(error.response.status);
+        // if(error.response.status === 401){navigationLink.navigate('Login')}
+        console.error(error.response.headers);
+      } else if (error.request) {
+        console.error(error.request);
+      } else {
+        console.error("Erroor", error.message);
+      }
+      console.error(error.config);
+    }
+  };
+
+  useEffect(() => {
+    getPlaylist();
+    getMusics();
+  }, []);
+
+  return (
+    <ScrollView style={styles.container}>
+      <View style={styles.opcao}>
+        <Pressable onPress={() => navigationLink.navigate("Home")}>
+          <Image source={seta} />
+        </Pressable>
+        <Text style={styles.upTitle}>FROM PLAYLIST</Text>
+        <Image source={options} />
+      </View>
+
+      <View style={styles.titleContainer}>
+        <Image style={styles.playlist} src={imagePlaylist} />
+        <Text style={styles.title}>{titlePlaylist}</Text>
+        <Text style={styles.tags}> {descPlaylist}</Text>
+      </View>
+
+      <View style={styles.musics}>
+        
+        {musicas.map((element, index) => (
+            console.log("element do map",element),
+             <MusicPlaylist
+          title={element.playMusic}
+          artist={"Slipknot"}
+          cover={
+            "https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg"
+          }
+        /> 
+    ))}
+        {/* <MusicPlaylist
+          title={"Custer"}
+          artist={"Slipknot"}
+          cover={
+            "https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg"
+          }
+        /> */}
+
+
+      </View>
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#000000',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#000000",
+  },
 
-    titleContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 30,
-    },
+  titleContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 30,
+  },
 
-    opcao: {
-        flex: 1,
-        padding: 25,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 30,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
+  opcao: {
+    flex: 1,
+    padding: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 
-    upTitle: {
-        marginTop: 20,
-        fontSize: 20,
-        color: 'grey',
-        textAlign: 'center',
-    },
+  upTitle: {
+    marginTop: 20,
+    fontSize: 20,
+    color: "grey",
+    textAlign: "center",
+  },
 
-    playlist: {
-        width: 263,
-        height: 252,
-        borderRadius: 30,
-    }, 
+  playlist: {
+    width: 263,
+    height: 252,
+    borderRadius: 30,
+  },
 
-    title: {
-        fontSize: 30,
-        color: 'white'
-    },
+  title: {
+    fontSize: 30,
+    color: "white",
+  },
 
-    tags: {
-        fontSize: 13,
-        color:'white'
-    },
-    
-    musics: {
-        flexDirection: 'column',
-        margin: 30,
-    },
+  tags: {
+    fontSize: 13,
+    color: "white",
+  },
 
-    list: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 10,
-    },
-    
-    capa: {
-        width: 53,
-        height: 52,
-        borderRadius: 30,
-        marginRight: 10, // Espaçamento à direita da capa
-    },
+  musics: {
+    flexDirection: "column",
+    margin: 30,
+  },
 
-    musicInfo: {
-        flex: 1, // Permite que as informações ocupem o espaço restante
-    },
+  list: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 10,
+  },
 
-    musicTitle: {
-        color: 'white',
-        fontSize: 16,
-    },
+  capa: {
+    width: 53,
+    height: 52,
+    borderRadius: 30,
+    marginRight: 10, // Espaçamento à direita da capa
+  },
 
-    artist: {
-        fontSize: 12,
-        color: 'grey',
-    },
+  musicInfo: {
+    flex: 1, // Permite que as informações ocupem o espaço restante
+  },
+
+  musicTitle: {
+    color: "white",
+    fontSize: 16,
+  },
+
+  artist: {
+    fontSize: 12,
+    color: "grey",
+  },
 });

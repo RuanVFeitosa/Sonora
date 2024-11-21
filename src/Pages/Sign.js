@@ -43,13 +43,13 @@ export default function Sign(props) {
     try {
 
       // Criando a conta
-      const response = await axios.post("http://192.168.15.8:7050/user", data, {
+      const response = await axios.post("http://192.168.56.1:7050/user", data, {
         "Content-Type": "application/json",
       });
 
       // Fazendo o login
 
-      const login = await axios.post("http://192.168.15.8:7050/user/login", data, {"Content-Type" : "application/json"});
+      const login = await axios.post("http://192.168.56.1:7050/user/login", data, {"Content-Type" : "application/json"});
       
       
       

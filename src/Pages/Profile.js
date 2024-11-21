@@ -29,6 +29,9 @@ export default function Profile() {
    // State do email do usuario
    const [email, setEmail] = useState("");
 
+   // State da imagem de perfil do usuario
+   const [fotoPerfil, setFotoPerfil] = useState("");
+
 
   const getUser = async () => {
     try {
@@ -43,7 +46,7 @@ export default function Profile() {
 
       // Pegando os dados do usuario na api
       const response = await axios.get(
-        `http://192.168.15.8:7050/user/${userId}`
+        `http://192.168.56.1:7050/user/${userId}`
       );
 
       // Criando variavel para poder manipular os dados do user
@@ -57,6 +60,9 @@ export default function Profile() {
 
       // Mudando o email do state do usuario
       setEmail(user.email);
+
+      // Mudando a imagem de perfil do usuario
+      setFotoPerfil(user.fotoPerfil);
     } catch (error) {
       // Tratando os erros
       if (error.response) {
@@ -89,7 +95,7 @@ export default function Profile() {
         <Icon style={styles.editIcon} name='pencil' />
         <Text style={styles.editText}>Edit</Text>
       </Pressable>
-      <Image style={styles.profile} source={profile} />
+      <Image style={styles.profile} src={fotoPerfil} />
       <View style={styles.information}>
         <Text style={styles.name}>{nome}</Text>
         <Text style={styles.email}>{email}</Text>

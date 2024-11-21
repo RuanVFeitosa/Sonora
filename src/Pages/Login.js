@@ -47,7 +47,7 @@ export default function Sign(props) {
 
       // Fazendo a requisição na API para fazer o login
       const response = await axios.post(
-        "http://192.168.15.8:7050/user/login",
+        "http://192.168.56.1:7050/user/login",
         data,
         { "Content-Type": "application/json" }
       );
