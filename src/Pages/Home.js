@@ -23,6 +23,7 @@ import gato from "../../assets/gato.jpg";
 import c1 from "../../assets/c1.png";
 import CardHome from "../Components/CardHome";
 import axios from "axios";
+import CardPlaylist from "../Components/CardPlaylist";
 
 const ListItem = ({ item }) => {
   return (
@@ -41,7 +42,6 @@ const ListItem = ({ item }) => {
 
 export default function Home() {
   const navigation = useNavigation();
-  
 
   // State do nome do usuario
   const [nome, setNome] = useState("");
@@ -58,6 +58,9 @@ export default function Home() {
   // State playlist mundial
   const [playlistMundial, setPlaylistMundial] = useState([]);
 
+  // State da foto de perfil do usuario
+  const [imagemPerfil, setImagemPerfil] = useState("");
+
   const getUser = async () => {
     try {
       // Pegando o token do storage
@@ -67,7 +70,7 @@ export default function Home() {
         console.error("Token não encontrado.");
         return; // Sai da função se o token não for encontrado
       }
-      
+
       // Mudando o token do state do usuario
       await setToken(token);
 
@@ -82,8 +85,12 @@ export default function Home() {
       // Criando variavel para poder manipular os dados do user
       const user = response.data.user;
 
+      console.log(user);
       // Mudando o nome do state do usuario
       setNome(user.nome);
+
+      // Mudando a imagem do state do usuario
+      setImagemPerfil(user.fotoPerfil);
 
       // Mudando o id do state do usuario
       setId(user._id);
@@ -113,7 +120,7 @@ export default function Home() {
         headers: { Authorization: token },
       });
 
-      setPlaylist(response.data.playlists)
+      setPlaylist(response.data.playlists);
 
       // for (const playlistObj of response.data.playlists) {
       //   // if(playlist.length > 3){
@@ -125,7 +132,7 @@ export default function Home() {
 
       // console.log(response.data.playlists);
 
-      console.log("playlist",playlist);
+      console.log("playlist", playlist);
 
       // if (response.data.playlists.length === 0) {
       //   console.log("tem nenhuma playlists");
@@ -152,9 +159,10 @@ export default function Home() {
       // Pegando o token do storage
       const token = await AsyncStorage.getItem("token");
 
-      const response = await axios.get("http://192.168.15.8:7050/playlistmundial/");
-      setPlaylistMundial(response.data.PlayListMundial)
-    
+      const response = await axios.get(
+        "http://192.168.15.8:7050/playlistmundial/"
+      );
+      setPlaylistMundial(response.data.PlayListMundial);
 
       // console.log("Playlist mundial aqui",playlistMundial);
     } catch (error) {
@@ -172,15 +180,14 @@ export default function Home() {
       }
       console.error(error.config);
     }
-  }
- 
-  useEffect(() => {
+  };
 
-    const loadData = async() => {
+  useEffect(() => {
+    const loadData = async () => {
       await getUser();
       await getPlaylist();
       await getPlaylistMundial();
-    }
+    };
 
     loadData();
   }, []);
@@ -190,219 +197,79 @@ export default function Home() {
   //   getPlaylist();
   // }, []);
 
-
   // console.log(nome)
 
   return (
-    <SectionList
-      style={styles.container}
-      contentContainerStyle={{ paddingBottom: 80 }}
-      sections={SECTIONS}
-      stickySectionHeadersEnabled={false}
-      ListHeaderComponent={
-        <>
-          <LinearGradient
-            colors={["#06A0B5", "#06A0B5", "#102B2D", "black", "black"]}
-            style={{ height: 160, width: "100%", opacity: 50 }}
-            start={{ x: 0.5, y: 0.1 }}
-          >
-            <View style={styles.header}>
-              <Image style={styles.profile} source={profile} />
-              <View style={styles.textContainer}>
-                <Text style={styles.welcome}>Welcome Back!</Text>
-                <Text style={styles.name}>{nome}</Text>
-              </View>
-
-              {/* <Pressable onPress={() => navigation.navigate('Settings')}>
-          <Image style={styles.settings} source={settings} />
-        </Pressable> */}
+    <>
+      <ScrollView style={styles.container}>
+        <LinearGradient
+          colors={["#06A0B5", "#06A0B5", "#102B2D", "black", "black"]}
+          style={{ height: 160, width: "100%", opacity: 50 }}
+          start={{ x: 0.5, y: 0.1 }}
+        >
+          <View style={styles.header}>
+            <Image style={styles.profile} src={imagemPerfil} />
+            <View style={styles.textContainer}>
+              <Text style={styles.welcome}>Welcome Back!</Text>
+              <Text style={styles.name}>{nome}</Text>
             </View>
-          </LinearGradient>
+          </View>
+        </LinearGradient>
 
-          <Text style={styles.cl}>Your Playlist</Text>
+        <Text style={styles.cl}>Your Playlist</Text>
+        <View style={styles.cards}>
+          <View style={styles.column}>
+            {playlist.map(
+              (element, index) => (
+                
+                
 
-          <View style={styles.cards}>
-            {/* Coluna da esquerda */}
-            <View style={styles.column}>
-              {/* <Text>Nenhuma playlist</Text> */}
-              {/* <CardHome title={"Gym Cat"} source={gato} pressable={"Playlist"} /> */}
-              {
-               
-              playlist.map(
-                (element, index) => (
-                  // console.log(element.musica.nomeMusica),
-                  console.log("element",element._id),
-                  // console.log(element._id),
-              <CardHome key={index} title={element.nome} image={element.imagem} pressable={"Playlist"} idPlaylist = {element._id}   /> 
-
+                (
+                  
+                  <CardHome
+                    key={index}
+                    title={element.nome}
+                    image={element.imagem}
+                    pressable={"Playlist"}
+                    idPlaylist={element._id}
+                  />
                 )
               )
-              }
-              {/* <CardHome
-            title={"From Zero"}
-            image={
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoNIT2bft_ZeRdkA1e3GXGn8eSAKpVaLN0ew&s"
-            }
-          /> */}
-            </View>
-
-            {/* Coluna da direita */}
-            {/* <View style={styles.column}>
-          <CardHome title={"Coffee"} />
-          <CardHome title={"Coffee"} />
-          <CardHome title={"Coffee"} />
-        </View> */}
+            )}
           </View>
-        </>
-      }
-      renderSectionHeader={({ section }) => (
-        <>
-          <Text style={styles.sectionHeader}>{section.title}</Text>
-          <FlatList
-            horizontal
-            data={section.data}
-            renderItem={({ item }) => (
-              <Pressable onPress={() => navigation.navigate("Playlist")}>
-                <ListItem item={item} />
-              </Pressable>
-            )}
-            keyExtractor={(item) => item.key}
-            showsHorizontalScrollIndicator={false}
-          />
-        </>
-      )}
-      renderItem={({ item }) => null}
-    >
-      {/* <View style={styles.containerCard}>
-        <StatusBar style="light" />
-        <SafeAreaView style={{ flex: 1 }}>
-          <SectionList
-            contentContainerStyle={{ paddingHorizontal: 10 }}
-            stickySectionHeadersEnabled={false}
-            sections={SECTIONS}
-            renderSectionHeader={({ section }) => (
-              <>
-                <Text style={styles.sectionHeader}>{section.title}</Text>
-                <FlatList
-                  horizontal
-                  data={section.data}
-                  renderItem={({ item }) => (
-                    <Pressable onPress={() => navigation.navigate("Playlist")}>
-                      <ListItem item={item} />
-                    </Pressable>
-                  )}
-                  showsHorizontalScrollIndicator={false}
-                />
-              </>
-            )}
-            renderItem={({ item, section }) => {
-              return null;
-              // return <ListItem item={item} />;
-            }}
-          />
-        </SafeAreaView>
-      </View> */}
-    </SectionList>
+        </View>
+
+        <View style={styles.containerCard}>
+          <Text style={styles.cl}>Playlist Sonora</Text>
+          <View style={styles.grid}>
+
+            {
+              playlistMundial.map((element, index) => (
+                
+                <CardPlaylist image = {element.imagem} pressable = {'Playlist'} idPlaylist = {element._id}/>
+              ))
+            }
+            
+  
+          </View>
+        </View>
+      </ScrollView>
+    </>
   );
 }
 
-const SECTIONS = [
-  {
-    title: "Made for you",
-    data: [
-      {
-        key: "1",
-        text: "Item text 1",
-        uri: "https://picsum.photos/id/1/200",
-      },
-      {
-        key: "2",
-        text: "Item text 2",
-        uri: "https://picsum.photos/id/10/200",
-      },
-
-      {
-        key: "3",
-        text: "Item text 3",
-        uri: "https://picsum.photos/id/1002/200",
-      },
-      {
-        key: "4",
-        text: "Item text 4",
-        uri: "https://picsum.photos/id/1006/200",
-      },
-      {
-        key: "5",
-        text: "Item text 5",
-        uri: "https://picsum.photos/id/1008/200",
-      },
-    ],
-  },
-  {
-    title: "Punk and hardcore",
-    data: [
-      {
-        key: "1",
-        text: "Item text 1",
-        uri: "https://picsum.photos/id/1011/200",
-      },
-      {
-        key: "2",
-        text: "Item text 2",
-        uri: "https://picsum.photos/id/1012/200",
-      },
-
-      {
-        key: "3",
-        text: "Item text 3",
-        uri: "https://picsum.photos/id/1013/200",
-      },
-      {
-        key: "4",
-        text: "Item text 4",
-        uri: "https://picsum.photos/id/1015/200",
-      },
-      {
-        key: "5",
-        text: "Item text 5",
-        uri: "https://picsum.photos/id/1016/200",
-      },
-    ],
-  },
-  {
-    title: "Based on your recent listening",
-    data: [
-      {
-        key: "1",
-        text: "Item text 1",
-        uri: "https://picsum.photos/id/1020/200",
-      },
-      {
-        key: "2",
-        text: "Item text 2",
-        uri: "https://picsum.photos/id/1024/200",
-      },
-
-      {
-        key: "3",
-        text: "Item text 3",
-        uri: "https://picsum.photos/id/1027/200",
-      },
-      {
-        key: "4",
-        text: "Item text 4",
-        uri: "https://picsum.photos/id/1035/200",
-      },
-      {
-        key: "5",
-        text: "Item text 5",
-        uri: "https://picsum.photos/id/1038/200",
-      },
-    ],
-  },
-];
-
 const styles = StyleSheet.create({
+  containerCard: {
+    flex: 1,
+    backgroundColor: "#0000",
+    justifyContent: "center",
+    padding: 20,
+  },
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap", // Permite quebra de linha
+    justifyContent: "space-between", // Espaçamento entre os itens
+  },
   container: {
     flex: 1,
     backgroundColor: "#000000",
@@ -461,7 +328,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     bottom: 30,
-    marginBottom: 20,
+    // marginBottom: 20,
   },
 
   //--------------------------------------------------- Cards ----------------------------------------------------
@@ -469,6 +336,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     bottom: 70,
+    // backgroundColor : 'black'
   },
   column: {
     // display: 'grid',
@@ -504,11 +372,6 @@ const styles = StyleSheet.create({
   },
 
   //--------------------------------------------------- Horizontal Cards ----------------------------------------------------
-  containerCard: {
-    flex: 1,
-    backgroundColor: "#0000",
-    bottom: 40,
-  },
 
   sectionHeader: {
     fontWeight: "800",
