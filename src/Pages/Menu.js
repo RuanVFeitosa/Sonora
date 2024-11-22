@@ -22,7 +22,7 @@ import code from '../../assets/music-note-2.png'
 
 export default function Menu({ route }) {
 
-    const {imagem, title, artist, idPlaylist, isPlaylistMundial} = route.params;
+    const {imagem, title, artist, idPlaylist, isPlaylistMundial, idMusica} = route.params;
     
 
     const navigation = useNavigation();
@@ -46,9 +46,20 @@ export default function Menu({ route }) {
             </View>
 
             <View style={styles.options}>
+
+                <Pressable onPress={() => navigation.navigate('Library', 
+                    {
+                        idMusica : idMusica,
+                        nomeMusica : title
+                    }
+                )}>
                 <Text style={styles.menuOptions}>
                     <Image source={note} />
                     Add to Playlist</Text>
+                </Pressable>
+                
+
+
                 <Text style={styles.menuOptions}>
                     <Image source={remove} />
                     Remove from Playlist</Text>

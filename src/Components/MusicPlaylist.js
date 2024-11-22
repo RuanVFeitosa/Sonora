@@ -14,7 +14,8 @@ export default function MusicPlaylist(props) {
                         title : props.title,
                         artist : props.artist,
                         idPlaylist : props.idPlaylist,
-                        isPlaylistMundial : props.isPlaylistMundial
+                        isPlaylistMundial : props.isPlaylistMundial,
+                        idMusica : props.idMusica
             }
         )}>
         <View style={styles.list}>
@@ -32,6 +33,7 @@ export default function MusicPlaylist(props) {
                         artist : props.artist,
                         idPlaylist : props.idPlaylist,
                         isPlaylistMundial : props.isPlaylistMundial,
+                        idMusica : props.idMusica
                     }
                 );
                 // console.log("clicou nos 3 ...")

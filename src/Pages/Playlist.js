@@ -172,6 +172,8 @@ export default function Playlist({ route, navigation }) {
                 cover={element.musica.imagemMusica}
                 idPlaylist={idPlaylist}
                 isPlaylistMundial={isPlaylistMundial}
+                idMusica={element.musica._id}
+                
               />
             )
           )

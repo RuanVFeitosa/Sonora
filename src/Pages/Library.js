@@ -1,37 +1,45 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, ScrollView } from 'react-native';
-import CardPlaylist from '../Components/CardPlaylist';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  FlatList,
+  StatusBar,
+  SafeAreaView,
+  SectionList,
+  ScrollView,
+  Pressable,
+} from "react-native";
+import CardPlaylist from "../Components/CardPlaylist";
+import ItemPlaylist from "../Components/ItemPlaylist";
 
-export default function Library() {
+export default function Library({route}) {
 
+  const {idMusica, nomeMusica} = route.params
 
+  console.log("aqui ta o id da musica", idMusica);
+
+  console.log("aqui ta o nome da musica", nomeMusica);
   const [playlist, setPlaylist] = useState([]);
+
+  const [playlistSelected, setPlaylistSelected] = useState([]);
+
   const getPlaylist = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
       headers = { Authorization: token };
-      const response = await axios.get(`http://192.168.15.8:7050/playlist`, {headers : { Authorization: token }});
+      const response = await axios.get(`http://192.168.15.8:7050/playlist`, {
+        headers: { Authorization: token },
+      });
 
       console.log("------------------------------------------------------");
-      console.log(response.data);
+      // console.log(response.data.playlists);
       setPlaylist(response.data.playlists);
+      console.log("useState da playlist", playlist);
       console.log("------------------------------------------------------");
-      console.log("token", token);
-
-      // if (isPlaylistMundial) {
-      //   const playlist = response.data.PlaylistMundial;
-      //   console.log(playlist);
-      //   setImagePlaylist(playlist.imagem);
-      //   setTitlePlaylist(playlist.nomePlaylist);
-      //   setDescPlaylist(playlist.descricao);
-      // }else {
-      //   const playlist = response.data.playlist;
-      //   setImagePlaylist(playlist.imagem);
-      //   setTitlePlaylist(playlist.nomePlaylist);
-      //   setDescPlaylist(playlist.descricao);
-      // }
     } catch (error) {
       // Tratando os erros
       if (error.response) {
@@ -54,32 +62,37 @@ export default function Library() {
 
   useEffect(() => {
     getPlaylist();
-  },[])
+  }, []);
 
   return (
-    
     <View style={styles.containerCard}>
-          <Text style={styles.cl}>Playlist Sonora</Text>
-          <View style={styles.grid}>
-
-            {
-              playlist.map((element, index) => (
-                console.log("testeasdasdads",element),
-                <CardPlaylist image = {element.imagem} pressable = {'Playlist'} idPlaylist = {element._id}/>
-              ))
-            }
-            
-  
-          </View>
-        </View>
-  )
+      <Text style={styles.cl}>Selecione sua playlist</Text>
+      <View style={styles.grid}>
+        {playlist.map((element, index) => (
+          // console.log("================================================"),
+          // console.log("================================================"),
+          // console.log("dentro do map",element),
+          <ItemPlaylist
+            imagem={element.imagem}
+            title={element.nome}
+            idPlaylist={element._id}
+            nomePlaylist={element.nome}
+            idMusica={idMusica}
+            nomeMusica={nomeMusica}
+          />
+          // console.log("================================================"),
+          // console.log("================================================")
+        ))}
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   containerCard: {
     flex: 1,
-    backgroundColor: "#0000",
-    justifyContent: "center",
+    backgroundColor: "black",
+    // justifyContent: "center",
     padding: 20,
   },
   grid: {
@@ -88,10 +101,32 @@ const styles = StyleSheet.create({
     justifyContent: "space-between", // Espaçamento entre os itens
   },
   cl: {
-    color: "black",
+    color: "white",
     fontWeight: "bold",
-    fontSize: 20,
-    bottom: 30,
+    fontSize: 30,
+    marginTop: 15,
+    // bottom: 30,
     // marginBottom: 20,
-  }
-})
+  },
+  containerPlaylist: {
+    marginTop: 10,
+    width: "100%",
+    height: 70,
+    display: "flex",
+    flexDirection: "row",
+    // justifyContent : 'center'
+    alignItems: "center",
+    backgroundColor: "black",
+    borderColor: "white",
+    borderWidth: 0.5,
+  },
+  image: {
+    width: 70,
+    height: 70,
+  },
+  textPlaylist: {
+    fontSize: 20,
+    marginLeft: 10,
+    color: "white",
+  },
+});

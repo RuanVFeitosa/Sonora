@@ -42,7 +42,7 @@ export default function MainNavigator() {
       }}
     >
       <Stack.Navigator
-        initialRouteName="Welcome"
+        initialRouteName="Library"
         screenOptions={{
           headerShown: false,
         }}
