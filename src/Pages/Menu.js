@@ -20,20 +20,29 @@ import share from '../../assets/share.png'
 import code from '../../assets/music-note-2.png'
 
 
-export default function Menu(props) {
+export default function Menu({ route }) {
+
+    const {imagem, title, artist, idPlaylist, isPlaylistMundial} = route.params;
+    
+
     const navigation = useNavigation();
     return (
         <ScrollView style={styles.container}>
             <View style={styles.opcao}>
-                <Pressable onPress={() => navigation.navigate('Playlist')} >
+                <Pressable onPress={() => navigation.navigate('Playlist', 
+                    {
+                        idPlaylist : idPlaylist,
+                        isPlaylistMundial : isPlaylistMundial
+                    }
+                    )} >
                     <Image source={seta} />
                 </Pressable>
             </View>
 
             <View style={styles.titleContainer}>
-                <Image style={styles.playlist} source={slipknot} />
-                <Text style={styles.title}>Custer</Text>
-                <Text style={styles.artist}> Slipknot</Text>
+                <Image style={styles.playlist} source={{uri : imagem}} />
+                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.artist}>{artist}</Text>
             </View>
 
             <View style={styles.options}>

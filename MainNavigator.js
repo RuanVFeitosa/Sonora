@@ -42,7 +42,7 @@ export default function MainNavigator() {
       }}
     >
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Welcome"
         screenOptions={{
           headerShown: false,
         }}
@@ -63,7 +63,7 @@ export default function MainNavigator() {
       </Stack.Navigator>
 
       {/* Exibe a NavigationBar apenas se a tela atual não estiver em `screensWithoutNavBar` */}
-      {screensWithoutNavBar.includes(currentScreen) ? (
+      {!screensWithoutNavBar.includes(currentScreen) ? (
         <NavigationBar currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} />
       ) : null}
     </NavigationContainer>

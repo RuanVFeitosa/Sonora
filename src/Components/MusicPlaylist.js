@@ -8,7 +8,15 @@ export default function MusicPlaylist(props) {
     const navigation = useNavigation();
 
     return (
-        <Pressable onPress={() => navigation.navigate('Player')}>
+        <Pressable onPress={() => navigation.navigate('Player', 
+            {
+                        imagem : props.cover,
+                        title : props.title,
+                        artist : props.artist,
+                        idPlaylist : props.idPlaylist,
+                        isPlaylistMundial : props.isPlaylistMundial
+            }
+        )}>
         <View style={styles.list}>
             <Image style={styles.capa} src={props.cover} />
             <View style={styles.musicInfo}>
@@ -17,7 +25,16 @@ export default function MusicPlaylist(props) {
             </View>
             <Pressable style={styles.options} onPress={(event) => {
                 event.stopPropagation(); // Evita que o evento alcance o Pressable externo
-                navigation.navigate('Menu');
+                navigation.navigate('Menu', 
+                    {
+                        imagem : props.cover,
+                        title : props.title,
+                        artist : props.artist,
+                        idPlaylist : props.idPlaylist,
+                        isPlaylistMundial : props.isPlaylistMundial,
+                    }
+                );
+                // console.log("clicou nos 3 ...")
             }}>
                 <Image source={options} />
             </Pressable>

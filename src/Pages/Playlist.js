@@ -112,20 +112,15 @@ export default function Playlist({ route, navigation }) {
         uri,
         { headers: headers }
       );
-      console.log("===========================================================")
-      console.log(response.data);
-      console.log("===========================================================")
 
+      if(isPlaylistMundial){
+        const musicas = response.data.musicasPlaylistMundial;
+        setMusicas(musicas);
+      }else {
+        const musicas = response.data.playMusic;
+        setMusicas(musicas);
+      }
 
-      // const musicasObj = response.data.playMusic;
-
-      // setMusicas(musicasObj);
-      // for(const musica of musicasObj){
-      //     // console.log("teste",musica.musica);
-      //     musicas.push(musica);
-      // }
-
-      // /playmusic/getbyplaylist/
     } catch (error) {
       // Tratando os erros
       if (error.response) {
@@ -175,6 +170,8 @@ export default function Playlist({ route, navigation }) {
                 title={element.musica.nomeMusica}
                 artist={element.musica.artista}
                 cover={element.musica.imagemMusica}
+                idPlaylist={idPlaylist}
+                isPlaylistMundial={isPlaylistMundial}
               />
             )
           )

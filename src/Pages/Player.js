@@ -8,7 +8,10 @@ import seta from '../../assets/seta-e.png';
 import options from '../../assets/options.png';
 import slipknot from '../../assets/slipknot.jpg';
 
-export default function Player() {
+export default function Player({ route }) {
+
+  const {imagem, title, artist, idPlaylist, isPlaylistMundial} = route.params;
+
   const navigation = useNavigation();
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -41,20 +44,29 @@ export default function Player() {
   return (
     <View style={styles.container}>
       <View style={styles.opcao}>
-        <Pressable onPress={() => navigation.navigate('Playlist')} >
+        <Pressable onPress={() => navigation.navigate('Playlist', {
+                        idPlaylist : idPlaylist,
+                        isPlaylistMundial : isPlaylistMundial
+                    })} >
           <Image source={seta} />
         </Pressable >
         <Text style={styles.title}>PLAYING FROM PLAYLIST</Text>
-        <Pressable onPress={() => navigation.navigate('Menu')}>
+        <Pressable onPress={() => navigation.navigate('Menu',{
+                        imagem : imagem,
+                        title : title,
+                        artist : artist,
+                        idPlaylist : idPlaylist,
+                        isPlaylistMundial : isPlaylistMundial
+                    })}>
           <Image source={options} />
         </Pressable>
       </View>
       <Text style={styles.subtitle}>Gym Cat</Text>
 
       <View style={styles.titleContainer}>
-        <Image style={styles.playlist} source={slipknot} />
-        <Text style={styles.name}>Custer</Text>
-        <Text style={styles.artist}>Slipknot</Text>
+        <Image style={styles.playlist} source={{uri : imagem}} />
+        <Text style={styles.name}>{title}</Text>
+        <Text style={styles.artist}>{artist}</Text>
       </View>
 
       <View style={styles.progressBarContainer}>

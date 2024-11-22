@@ -105,7 +105,7 @@ export default function Profile() {
         <View style={styles.column}>
           <CardProfile title={"Favorites"} icon={"heart"} pressable={"Fav"} />
           <CardProfile title={"New Playlist"} icon={"add"} pressable={"Create Playlist"} />
-          <CardProfile title={"Playlist"} icon={"musical-notes"} pressable={"Fav"} />
+          <CardProfile title={"Playlist"} icon={"musical-notes"} pressable={"Library"} />
         </View>
       </View>
     </LinearGradient>
