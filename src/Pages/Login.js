@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as Keychain from "react-native-keychain";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
@@ -11,6 +11,7 @@ import {
   TextInput,
   Alert,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../assets/Logo-sf.png";
@@ -47,7 +48,7 @@ export default function Sign(props) {
 
       // Fazendo a requisição na API para fazer o login
       const response = await axios.post(
-        "http://192.168.56.1:7050/user/login",
+        "http://192.168.15.8:7050/user/login",
         data,
         { "Content-Type": "application/json" }
       );
@@ -73,21 +74,27 @@ export default function Sign(props) {
     }
   };
 
+  
+
   return (
+    
     <>
-      <ScrollView  contentContainerStyle={styles.container}>
+  
+      <ScrollView  contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" scrollEnabled={false}>
+       
         <View style={styles.containerView}>
           <Text style={styles.title}>Login to your account</Text>
 
           {/* Formulário de Login */}
           <TextInput
             style={styles.input}
+            
             placeholder="Email"
             placeholderTextColor="#aaaaaa"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
-            autoCapitalize="none"
+            // autoCapitalize="none"
           />
           <TextInput
             style={styles.input}
@@ -191,6 +198,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 10,
     borderWidth: 1,
+    // zIndex : 1,
     // top: 200,
     borderColor: "#444",
   },

@@ -37,9 +37,13 @@ export default function CreatePlaylist() {
         imagem : playlistImg
       }
 
-      const response = await axios.post('http://192.168.56.1:7050/playlist/', data, {headers : {'Content-Type' : 'application/json', 'Authorization' : token}});
+      const response = await axios.post('http://192.168.15.8:7050/playlist/', data, {headers : {'Content-Type' : 'application/json', 'Authorization' : token}});
       createTwoButtonAlert("Sucesso !","Playlist criada com sucesso");
-      navigation.navigate('Home');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Home' }],
+      });
+      
       console.log(response.data);
 
       console.log(data);

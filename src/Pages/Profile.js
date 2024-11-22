@@ -46,7 +46,7 @@ export default function Profile() {
 
       // Pegando os dados do usuario na api
       const response = await axios.get(
-        `http://192.168.56.1:7050/user/${userId}`
+        `http://192.168.15.8:7050/user/${userId}`
       );
 
       // Criando variavel para poder manipular os dados do user

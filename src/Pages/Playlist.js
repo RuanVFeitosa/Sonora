@@ -38,18 +38,25 @@ export default function Playlist({ route, navigation }) {
 
   const getPlaylist = async () => {
     try {
-      const token = await AsyncStorage.getItem("token");
 
+      console.log(idPlaylist);
+      const token = await AsyncStorage.getItem("token");
+      console.log("token",token)
       const response = await axios.get(
-        `http://192.168.56.1:7050/playlist/${idPlaylist}`,
+        `http://192.168.15.8:7050/playlist/${idPlaylist}`,
         { headers: { Authorization: token } }
       );
 
-      const playlistObj = response.data.playlist;
+      
+      const playlist = response.data.playlist
+      console.log(playlist);
 
-      setImagePlaylist(playlistObj.imagem);
-      setTitlePlaylist(playlistObj.nomePlaylist);
-      setDescPlaylist(playlistObj.descricao);
+      // const playlistObj = response.data.playlist;
+
+      // console.log(playlistObj);
+      setImagePlaylist(playlist.imagem);
+      setTitlePlaylist(playlist.nomePlaylist);
+      setDescPlaylist(playlist.descricao);
       //   console.log(response.data);
     } catch (error) {
       // Tratando os erros
@@ -58,7 +65,7 @@ export default function Playlist({ route, navigation }) {
         // Adicionando a mensagem de erro na tela
         // createTwoButtonAlert(error.response.data.msg);
         console.error(error.response.status);
-        // if(error.response.status === 401){navigationLink.navigate('Login')}
+        if(error.response.status === 401){navigationLink.navigate('Login')}
         console.error(error.response.headers);
       } else if (error.request) {
         console.error(error.request);
@@ -73,14 +80,14 @@ export default function Playlist({ route, navigation }) {
     try {
       const token = await AsyncStorage.getItem("token");
       // console.log(idPlaylist);
-    const response = await axios.get(`http://192.168.56.1:7050/playmusic/getbyplaylist/${idPlaylist}`,{ headers: { Authorization: token } });
+    const response = await axios.get(`http://192.168.15.8:7050/playmusic/getbyplaylist/${idPlaylist}`,{ headers: { Authorization: token } });
         // console.log(response.data);
         const musicasObj = response.data.playMusic;
-
-        for(const musica of musicasObj){
-            // console.log("teste",musica.musica);
-            musicas.push(musica);
-        }
+      setMusicas(musicasObj);
+        // for(const musica of musicasObj){
+        //     // console.log("teste",musica.musica);
+        //     musicas.push(musica);
+        // }
         
       // /playmusic/getbyplaylist/
     } catch (error) {
@@ -125,6 +132,7 @@ export default function Playlist({ route, navigation }) {
       <View style={styles.musics}>
         
         {musicas.map(async(element, index) => (
+          console.log(element),
             console.log("element do map",element.musica.artista),
              <MusicPlaylist
           title={element.musica.nomeMusica}

@@ -39,9 +39,9 @@ const ListItem = ({ item }) => {
   );
 };
 
-export default function Home(props) {
+export default function Home() {
   const navigation = useNavigation();
-  const { title = "Enter" } = props;
+  
 
   // State do nome do usuario
   const [nome, setNome] = useState("");
@@ -55,11 +55,19 @@ export default function Home(props) {
   // State playlist
   const [playlist, setPlaylist] = useState([]);
 
+  // State playlist mundial
+  const [playlistMundial, setPlaylistMundial] = useState([]);
+
   const getUser = async () => {
     try {
       // Pegando o token do storage
       const token = await AsyncStorage.getItem("token");
 
+      if (!token) {
+        console.error("Token não encontrado.");
+        return; // Sai da função se o token não for encontrado
+      }
+      
       // Mudando o token do state do usuario
       await setToken(token);
 
@@ -68,7 +76,7 @@ export default function Home(props) {
 
       // Pegando os dados do usuario na api
       const response = await axios.get(
-        `http://192.168.56.1:7050/user/${userId}`
+        `http://192.168.15.8:7050/user/${userId}`
       );
 
       // Criando variavel para poder manipular os dados do user
@@ -101,25 +109,27 @@ export default function Home(props) {
       // Pegando o token do storage
       const token = await AsyncStorage.getItem("token");
 
-      const response = await axios.get("http://192.168.56.1:7050/playlist/", {
+      const response = await axios.get("http://192.168.15.8:7050/playlist/", {
         headers: { Authorization: token },
       });
 
-      for (const playlistObj of response.data.playlists) {
-        // if(playlist.length > 3){
-        //   return null
-        // }
-        playlist.push(playlistObj);
-      }
+      setPlaylist(response.data.playlists)
+
+      // for (const playlistObj of response.data.playlists) {
+      //   // if(playlist.length > 3){
+      //   //   return null
+      //   // }
+      //   // playlist.push(playlistObj);
+      // }
       // response.data.playlists
 
       // console.log(response.data.playlists);
 
       console.log("playlist",playlist);
 
-      if (response.data.playlists.length === 0) {
-        console.log("tem nenhuma playlists");
-      }
+      // if (response.data.playlists.length === 0) {
+      //   console.log("tem nenhuma playlists");
+      // }
     } catch (error) {
       // Tratando os erros
       if (error.response) {
@@ -136,11 +146,50 @@ export default function Home(props) {
       console.error(error.config);
     }
   };
+
+  const getPlaylistMundial = async () => {
+    try {
+      // Pegando o token do storage
+      const token = await AsyncStorage.getItem("token");
+
+      const response = await axios.get("http://192.168.15.8:7050/playlistmundial/");
+      setPlaylistMundial(response.data.PlayListMundial)
+    
+
+      // console.log("Playlist mundial aqui",playlistMundial);
+    } catch (error) {
+      // Tratando os erros
+      if (error.response) {
+        console.log("data", error.response.data.msg);
+        // Adicionando a mensagem de erro na tela
+        // createTwoButtonAlert(error.response.data.msg);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+      } else if (error.request) {
+        console.error(error.request);
+      } else {
+        console.error("Erroor", error.message);
+      }
+      console.error(error.config);
+    }
+  }
  
   useEffect(() => {
-     getUser();
-    getPlaylist();
+
+    const loadData = async() => {
+      await getUser();
+      await getPlaylist();
+      await getPlaylistMundial();
+    }
+
+    loadData();
   }, []);
+
+  // useEffect(async() => {
+  //   getUser();
+  //   getPlaylist();
+  // }, []);
+
 
   // console.log(nome)
 
@@ -177,15 +226,18 @@ export default function Home(props) {
             <View style={styles.column}>
               {/* <Text>Nenhuma playlist</Text> */}
               {/* <CardHome title={"Gym Cat"} source={gato} pressable={"Playlist"} /> */}
-              {playlist.map(
+              {
+               
+              playlist.map(
                 (element, index) => (
                   // console.log(element.musica.nomeMusica),
-                  // console.log(element),
+                  console.log("element",element._id),
                   // console.log(element._id),
-              <CardHome title={element.nome} image={element.imagem} pressable={"Playlist"} idPlaylist = {element._id}  /> 
+              <CardHome key={index} title={element.nome} image={element.imagem} pressable={"Playlist"} idPlaylist = {element._id}   /> 
 
                 )
-              )}
+              )
+              }
               {/* <CardHome
             title={"From Zero"}
             image={

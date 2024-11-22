@@ -42,7 +42,7 @@ export default function MainNavigator() {
       }}
     >
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Sign"
         screenOptions={{
           headerShown: false,
         }}
