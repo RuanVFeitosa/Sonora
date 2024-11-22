@@ -6,7 +6,7 @@ import options from '../../assets/options.png';
 
 export default function MusicPlaylist(props) {
     const navigation = useNavigation();
-
+    console.log("props cover",props.cover)
     return (
         <Pressable onPress={() => navigation.navigate('Player', 
             {
@@ -15,11 +15,12 @@ export default function MusicPlaylist(props) {
                         artist : props.artist,
                         idPlaylist : props.idPlaylist,
                         isPlaylistMundial : props.isPlaylistMundial,
-                        idMusica : props.idMusica
+                        idMusica : props.idMusica,
+                        back : props.back
             }
         )}>
         <View style={styles.list}>
-            <Image style={styles.capa} src={props.cover} />
+            <Image style={styles.capa} source={{uri : props.cover}} />
             <View style={styles.musicInfo}>
                 <Text style={styles.musicTitle}>{props.title}</Text>
                 <Text style={styles.artist}>{props.artist}</Text>

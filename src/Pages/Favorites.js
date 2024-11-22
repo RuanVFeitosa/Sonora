@@ -37,9 +37,8 @@ export default function Favorites() {
       const response = await axios.get("http://192.168.15.8:7050/musicfavorita/", {headers : {'Authorization' : token}});
 
 
-      for(const musicaObj of response.data.musicasFavoritas){
-        musica.push(musicaObj);
-      }
+      setMusica(response.data.musicasFavoritas);
+      
 
 
       // setMusica(response.data.musicasFavortias);
@@ -92,12 +91,14 @@ export default function Favorites() {
         })} */}
 
 {musica.map((element, index) => (
-  console.log(element.musica.nomeMusica),
+  console.log(element.musica.imagemMusica),
   <MusicPlaylist 
     key={index} // Sempre adicione uma chave única para listas
     title={element.musica.nomeMusica} 
-    artist={element.artist} 
-    cover={element.cover} 
+    artist={element.musica.artista} 
+    cover={element.musica.imagemMusica}
+    idMusica={element.musica._id} 
+    back={'Fav'}
   />
 ))}
 

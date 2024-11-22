@@ -18,7 +18,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Player({ route }) {
-  const { imagem, title, artist, idPlaylist, isPlaylistMundial, idMusica } =
+  const { imagem, title, artist, idPlaylist, isPlaylistMundial, idMusica, back } =
     route.params;
 
   const navigation = useNavigation();
@@ -26,13 +26,14 @@ export default function Player({ route }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(180); // duração em segundos (3 minutos)
-  const [isMusicFavorite, setIsMusicFavorite] = useState(false);
+  const [isMusicFavorite, setIsMusicFavorite] = useState(null);
+  const [iconHeart, setIconHeart] = useState("heart-outline");
   const gostarMusica = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
-
+      // setIsMusicFavorite(true);
       if (!isMusicFavorite) {
-
+        // setIsMusicFavorite(true);
         const data = {
           idMusica: idMusica,
         };
@@ -46,11 +47,18 @@ export default function Player({ route }) {
             },
           }
         );
+        setIsMusicFavorite(true);
+        setIconHeart("heart");
         console.log(response.data);
-      }else {
-
+      } else {
         // Criando delete pela id da musica la no back end
-        const response = await axios.delete(`http://192.168.15.8:7050/musicfavorita/${}`)
+        const response = await axios.delete(
+          `http://192.168.15.8:7050/musicfavorita/deletebymusic/${idMusica}`,
+          { headers: { Authorization: token } }
+        );
+        console.log(response.data);
+        setIsMusicFavorite(false);
+        setIconHeart("heart-outline");
       }
 
       // console.log("gostou da musica")
@@ -61,20 +69,59 @@ export default function Player({ route }) {
         console.log("data", error.response.data.msg);
         // Adicionando a mensagem de erro na tela
         // createTwoButtonAlert(error.response.data.msg);
-        console.error(error.response.data);
-        console.error(error.response.status);
+        // console.error(error.response.data);
+        // console.error(error.response.status);
         // if (error.response.status === 401) {
         //   navigationLink.navigate("Login");
         // }
-        console.error(error.response.headers);
+        // console.error(error.response.headers);
       } else if (error.request) {
-        console.error(error.request);
+        // console.error(error.request);
       } else {
-        console.error("Erroor", error.message);
+        // console.error("Erroor", error.message);
       }
-      console.error(error.config);
+      // console.error(error.config);
     }
   };
+
+  const isMusicFavoriteFunc = async () => {
+    try {
+      
+      const token = await AsyncStorage.getItem("token");
+
+      const response = await axios.get(
+        `http://192.168.15.8:7050/musicfavorita/getbymusic/${idMusica}`, { headers: { Authorization: token } }
+      );
+      if(response.status === 404){
+        setIsMusicFavorite(false);
+        setIconHeart('heart-outline')
+      }else if( response.status === 200){
+        setIsMusicFavorite(true);
+        setIconHeart('heart')
+      }
+
+      // console.log(response.status);
+    } catch (error) {
+      // Tratando os erros
+      if (error.response) {
+        console.log("data", error.response.data.msg);
+        // Adicionando a mensagem de erro na tela
+        // createTwoButtonAlert(error.response.data.msg);
+        // console.error(error.response.data);
+        // console.error(error.response.status);
+        // if (error.response.status === 401) {
+        //   navigationLink.navigate("Login");
+        // }
+        // console.error(error.response.headers);
+      } else if (error.request) {
+        // console.error(error.request);
+      } else {
+        // console.error("Erroor", error.message);
+      }
+      // console.error(error.config);
+    }
+  };
+
   // Simula o avanço do tempo
   useEffect(() => {
     let interval;
@@ -89,6 +136,10 @@ export default function Player({ route }) {
     }
     return () => clearInterval(interval);
   }, [isPlaying, currentTime]);
+
+  useEffect(() => {
+    isMusicFavoriteFunc();
+  })
 
   const togglePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -105,7 +156,7 @@ export default function Player({ route }) {
       <View style={styles.opcao}>
         <Pressable
           onPress={() =>
-            navigation.navigate("Playlist", {
+            navigation.navigate(back, {
               idPlaylist: idPlaylist,
               isPlaylistMundial: isPlaylistMundial,
             })
@@ -171,7 +222,7 @@ export default function Player({ route }) {
         </TouchableOpacity>
         <TouchableOpacity>
           <Icon
-            name="heart"
+            name={iconHeart}
             size={40}
             color="#fff"
             key={isMusicFavorite}

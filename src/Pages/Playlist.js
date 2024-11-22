@@ -173,7 +173,7 @@ export default function Playlist({ route, navigation }) {
                 idPlaylist={idPlaylist}
                 isPlaylistMundial={isPlaylistMundial}
                 idMusica={element.musica._id}
-                
+                back={'Playlist'}
               />
             )
           )
