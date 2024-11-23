@@ -20,9 +20,10 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Player({ route }) {
-  const { imagem, title, artist, idPlaylist, isPlaylistMundial, idMusica, back } =
+  const { imagem, title, artist, idPlaylist, isPlaylistMundial, idMusica, back, nomePlaylist } =
     route.params;
 
+    console.log(nomePlaylist)
   const navigation = useNavigation();
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -63,8 +64,7 @@ export default function Player({ route }) {
         setIconHeart("heart-outline");
       }
 
-      // console.log("gostou da musica")
-      // console.log("Ida da musica", idMusica);
+      
     } catch (error) {
       // Tratando os erros
       if (error.response) {
@@ -183,7 +183,7 @@ export default function Player({ route }) {
           <Image source={options} />
         </Pressable>
       </View>
-      <Text style={styles.subtitle}>Gym Cat</Text>
+      <Text style={styles.subtitle}>{nomePlaylist}</Text>
 
       <View style={styles.titleContainer}>
         <Image style={styles.playlist} source={{ uri: imagem }} />

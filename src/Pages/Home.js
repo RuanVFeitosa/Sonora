@@ -15,7 +15,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { URL } from '@env';
+import { URL } from "@env";
 
 import profile from "../../assets/Taylor.png";
 import notify from "../../assets/notify.png";
@@ -27,6 +27,7 @@ import CardHome from "../Components/CardHome";
 import axios from "axios";
 import CardPlaylist from "../Components/CardPlaylist";
 
+import Icon from "react-native-vector-icons/Ionicons";
 const ListItem = ({ item }) => {
   return (
     <View style={styles.item}>
@@ -91,18 +92,19 @@ export default function Home() {
       const userId = await AsyncStorage.getItem("userId");
 
       // Pegando os dados do usuario na api
-      const response = await axios.get(
-        `${URL}/user/${userId}`
-      );
+      const response = await axios.get(`${URL}/user/${userId}`);
 
       // Criando variavel para poder manipular os dados do user
       const user = response.data.user;
 
-      console.log("------------------------------------------------------------------");
+      console.log(
+        "------------------------------------------------------------------"
+      );
       console.log("Dados do usuario coletado com sucesso !");
-      console.log("------------------------------------------------------------------");
+      console.log(
+        "------------------------------------------------------------------"
+      );
 
-      
       // Mudando o nome do state do usuario
       setNome(user.nome);
 
@@ -142,12 +144,13 @@ export default function Home() {
       // Colocando as playlist no state
       setPlaylist(response.data.playlists);
 
-      
-      console.log("------------------------------------------------------------------");
+      console.log(
+        "------------------------------------------------------------------"
+      );
       console.log("Playlists do usuario coletada com sucesso !");
-      console.log("------------------------------------------------------------------");
-
-    
+      console.log(
+        "------------------------------------------------------------------"
+      );
     } catch (error) {
       // Tratando os erros
       if (error.response) {
@@ -171,19 +174,18 @@ export default function Home() {
       // const token = await AsyncStorage.getItem("token");
 
       // Pegando todas as playlists mundiais
-      const response = await axios.get(
-        `${URL}/playlistmundial/`
-      );
+      const response = await axios.get(`${URL}/playlistmundial/`);
 
       // Mudando o state da playlist mundial
       setPlaylistMundial(response.data.PlayListMundial);
 
-      console.log("------------------------------------------------------------------");
+      console.log(
+        "------------------------------------------------------------------"
+      );
       console.log("Todas as playlists mundiais coletadas com sucesso !");
-      console.log("------------------------------------------------------------------");
-
-      
-      
+      console.log(
+        "------------------------------------------------------------------"
+      );
     } catch (error) {
       // Tratando os erros
       if (error.response) {
@@ -211,13 +213,6 @@ export default function Home() {
     loadData();
   }, []);
 
-  // useEffect(async() => {
-  //   getUser();
-  //   getPlaylist();
-  // }, []);
-
-  // console.log(nome)
-
   return (
     <>
       <ScrollView style={styles.container}>
@@ -238,35 +233,30 @@ export default function Home() {
         <Text style={styles.cl}>Your Playlist</Text>
         <View style={styles.cards}>
           <View style={styles.column}>
-            {playlist.map(
-              (element, index) => (
-                (
-                  
-                  <CardHome
-                    key={index}
-                    title={element.nome}
-                    image={element.imagem}
-                    pressable={"Playlist"}
-                    idPlaylist={element._id}
-                  />
-                )
-              )
-            )}
+            {/* <Icon name="add" size={30} color={"white"} /> */}
+
+            {playlist.map((element, index) => (
+              <CardHome
+                key={index}
+                title={element.nome}
+                image={element.imagem}
+                pressable={"Playlist"}
+                idPlaylist={element._id}
+              />
+            ))}
           </View>
         </View>
 
         <View style={styles.containerCard}>
           <Text style={styles.cl}>Playlist Sonora</Text>
           <View style={styles.grid}>
-
-            {
-              playlistMundial.map((element, index) => (
-                
-                <CardPlaylist image = {element.imagem} pressable = {'Playlist'} idPlaylist = {element._id}/>
-              ))
-            }
-            
-  
+            {playlistMundial.map((element, index) => (
+              <CardPlaylist
+                image={element.imagem}
+                pressable={"Playlist"}
+                idPlaylist={element._id}
+              />
+            ))}
           </View>
         </View>
       </ScrollView>

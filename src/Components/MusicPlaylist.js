@@ -6,7 +6,7 @@ import options from '../../assets/options.png';
 
 export default function MusicPlaylist(props) {
     const navigation = useNavigation();
-    
+    console.log(props.nomePlaylist)
     return (
         <Pressable onPress={() => navigation.navigate('Player', 
             {
@@ -16,7 +16,8 @@ export default function MusicPlaylist(props) {
                         idPlaylist : props.idPlaylist,
                         isPlaylistMundial : props.isPlaylistMundial,
                         idMusica : props.idMusica,
-                        back : props.back
+                        back : props.back,
+                        nomePlaylist : props.nomePlaylist
             }
         )}>
         <View style={styles.list}>

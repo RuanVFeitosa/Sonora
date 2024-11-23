@@ -63,14 +63,14 @@ export default function Playlist({ route, navigation }) {
         console.log(
           "------------------------------------------------------------------"
         );
-        console.log("Dados da playlist mundial coletados com sucesso");
+        console.log("Dados da playlist mundial coletados com sucesso",response.data.PlaylistMundial);
         console.log(
           "------------------------------------------------------------------"
         );
         const playlist = response.data.PlaylistMundial;
         ;
         setImagePlaylist(playlist.imagem);
-        setTitlePlaylist(playlist.nomePlaylist);
+        setTitlePlaylist(playlist.nome);
         setDescPlaylist(playlist.descricao);
       } else {
         console.log(
@@ -165,6 +165,7 @@ export default function Playlist({ route, navigation }) {
               title: titlePlaylist,
               isPlaylist: true,
               idPlaylist: idPlaylist,
+
             })
           }
         >
@@ -188,6 +189,7 @@ export default function Playlist({ route, navigation }) {
             isPlaylistMundial={isPlaylistMundial}
             idMusica={element.musica._id}
             back={"Playlist"}
+            nomePlaylist={titlePlaylist}
           />
         ))}
       </View>
