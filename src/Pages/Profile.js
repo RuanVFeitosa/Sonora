@@ -3,7 +3,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
-
+// require('dotenv').config();
+import { URL } from '@env';
 
 import profile from '../../assets/Taylor.png';
 import notify from '../../assets/notify.png';
@@ -46,7 +47,7 @@ export default function Profile() {
 
       // Pegando os dados do usuario na api
       const response = await axios.get(
-        `http://192.168.15.8:7050/user/${userId}`
+        `${URL}/user/${userId}`
       );
 
       // Criando variavel para poder manipular os dados do user

@@ -11,9 +11,11 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
+// require('dotenv').config();
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { URL } from '@env';
 
 import profile from "../../assets/Taylor.png";
 import notify from "../../assets/notify.png";
@@ -79,7 +81,7 @@ export default function Home() {
 
       // Pegando os dados do usuario na api
       const response = await axios.get(
-        `http://192.168.15.8:7050/user/${userId}`
+        `${URL}/user/${userId}`
       );
 
       // Criando variavel para poder manipular os dados do user
@@ -116,7 +118,7 @@ export default function Home() {
       // Pegando o token do storage
       const token = await AsyncStorage.getItem("token");
 
-      const response = await axios.get("http://192.168.15.8:7050/playlist/", {
+      const response = await axios.get(`${URL}/playlist/`, {
         headers: { Authorization: token },
       });
 
@@ -160,7 +162,7 @@ export default function Home() {
       const token = await AsyncStorage.getItem("token");
 
       const response = await axios.get(
-        "http://192.168.15.8:7050/playlistmundial/"
+        `${URL}/playlistmundial/`
       );
       setPlaylistMundial(response.data.PlayListMundial);
 

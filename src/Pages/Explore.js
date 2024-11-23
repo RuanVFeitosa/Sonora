@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-
+// require('dotenv').config();
 import Logo from '../../assets/Logo-sf.png'
 import profile from '../../assets/Profile.png';
 import notify from '../../assets/notify.png';
 import settings from '../../assets/settings.png';
 import c1 from '../../assets/c1.png'
+import { URL } from '@env';
 
 export default function Explore(props) {
   const { title = 'Enter' } = props;

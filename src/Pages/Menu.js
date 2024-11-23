@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Slider from '@react-native-community/slider';
 import { Text, View, StyleSheet, Image, TouchableOpacity, Pressable, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+// require('dotenv').config();
 import Icon from 'react-native-vector-icons/Ionicons';
 import seta from '../../assets/seta-e.png';
 import options from '../../assets/options.png';

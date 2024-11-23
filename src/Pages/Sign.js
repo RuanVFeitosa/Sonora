@@ -9,6 +9,8 @@ import {
   TextInput,
   Alert,
 } from "react-native";
+import { URL } from '@env';
+
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../assets/Logo-sf.png";
 import google from "../../assets/google.png";
@@ -16,7 +18,7 @@ import facebook from "../../assets/facebook.png";
 import apple from "../../assets/apple.png";
 import axios from "axios";
 import  AsyncStorage from "@react-native-async-storage/async-storage";
-
+// require('dotenv').config();
 export default function Sign(props) {
   const navigation = useNavigation();
   const { title = "Enter" } = props;
@@ -43,13 +45,13 @@ export default function Sign(props) {
     try {
 
       // Criando a conta
-      const response = await axios.post("http://192.168.15.8:7050/user", data, {
+      const response = await axios.post(`${URL}/user`, data, {
         "Content-Type": "application/json",
       });
 
       // Fazendo o login
 
-      const login = await axios.post("http://192.168.15.8:7050/user/login", data, {"Content-Type" : "application/json"});
+      const login = await axios.post(`${URL}/user/login`, data, {"Content-Type" : "application/json"});
       
       
       

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// require('dotenv').config();
+import { URL } from '@env';
 
 import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, ScrollView, Pressable } from 'react-native';
 import seta from '../../assets/seta-e.png';
@@ -34,7 +36,7 @@ export default function Favorites() {
 
       console.log(token);
 
-      const response = await axios.get("http://192.168.15.8:7050/musicfavorita/", {headers : {'Authorization' : token}});
+      const response = await axios.get(`${URL}/musicfavorita/`, {headers : {'Authorization' : token}});
 
 
       setMusica(response.data.musicasFavoritas);

@@ -9,6 +9,8 @@ import {
   Pressable,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+// require('dotenv').config();
+import { URL } from '@env';
 
 import Icon from "react-native-vector-icons/Ionicons";
 import seta from "../../assets/seta-e.png";
@@ -38,7 +40,7 @@ export default function Player({ route }) {
           idMusica: idMusica,
         };
         const response = await axios.post(
-          `http://192.168.15.8:7050/musicfavorita/`,
+          `${URL}/musicfavorita/`,
           data,
           {
             headers: {
@@ -53,7 +55,7 @@ export default function Player({ route }) {
       } else {
         // Criando delete pela id da musica la no back end
         const response = await axios.delete(
-          `http://192.168.15.8:7050/musicfavorita/deletebymusic/${idMusica}`,
+          `${URL}/musicfavorita/deletebymusic/${idMusica}`,
           { headers: { Authorization: token } }
         );
         console.log(response.data);
@@ -90,7 +92,7 @@ export default function Player({ route }) {
       const token = await AsyncStorage.getItem("token");
 
       const response = await axios.get(
-        `http://192.168.15.8:7050/musicfavorita/getbymusic/${idMusica}`, { headers: { Authorization: token } }
+        `${URL}/musicfavorita/getbymusic/${idMusica}`, { headers: { Authorization: token } }
       );
       if(response.status === 404){
         setIsMusicFavorite(false);

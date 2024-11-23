@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Text, View, TextInput, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, Pressable, Alert } from 'react-native';
 import axios from 'axios';
-
+// require('dotenv').config();
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { URL } from '@env';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function CreatePlaylist() {
@@ -37,7 +37,7 @@ export default function CreatePlaylist() {
         imagem : playlistImg
       }
 
-      const response = await axios.post('http://192.168.15.8:7050/playlist/', data, {headers : {'Content-Type' : 'application/json', 'Authorization' : token}});
+      const response = await axios.post(`${URL}/playlist/`, data, {headers : {'Content-Type' : 'application/json', 'Authorization' : token}});
       createTwoButtonAlert("Sucesso !","Playlist criada com sucesso");
       navigation.reset({
         index: 0,

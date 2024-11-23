@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// require('dotenv').config();
+import { URL } from '@env';
 
 import gato from "../../assets/gato.jpg";
 import seta from "../../assets/seta-e.png";
@@ -47,10 +49,10 @@ export default function Playlist({ route, navigation }) {
       var headers = {};
       
       if (isPlaylistMundial) {
-        uri = `http://192.168.15.8:7050/playlistmundial/${idPlaylist}`;
+        uri = `${URL}/playlistmundial/${idPlaylist}`;
         playlistType = "PlaylistMundial";
       } else {
-        uri = `http://192.168.15.8:7050/playlist/${idPlaylist}`;
+        uri = `${URL}/playlist/${idPlaylist}`;
         headers = { Authorization: token };
         
       }
@@ -100,9 +102,9 @@ export default function Playlist({ route, navigation }) {
       var headers = {};
 
       if(isPlaylistMundial){
-        uri =  `http://192.168.15.8:7050/playlistmundialmusica/getbyplaylist/${idPlaylist}`
+        uri =  `${URL}/playlistmundialmusica/getbyplaylist/${idPlaylist}`
       }else {
-        uri = `http://192.168.15.8:7050/playmusic/getbyplaylist/${idPlaylist}`
+        uri = `${URL}/playmusic/getbyplaylist/${idPlaylist}`
         headers = { Authorization: token };
 
       }

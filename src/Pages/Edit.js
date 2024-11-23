@@ -3,6 +3,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, Pressable, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
+// require('dotenv').config();
+import { URL } from '@env';
 
 import profile from '../../assets/Taylor.png';
 import seta from '../../assets/seta-e.png';

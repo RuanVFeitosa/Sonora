@@ -15,6 +15,8 @@ import {
 } from "react-native";
 import CardPlaylist from "../Components/CardPlaylist";
 import ItemPlaylist from "../Components/ItemPlaylist";
+// require('dotenv').config();
+import { URL } from '@env';
 
 export default function Library({route}) {
 
@@ -31,7 +33,7 @@ export default function Library({route}) {
     try {
       const token = await AsyncStorage.getItem("token");
       headers = { Authorization: token };
-      const response = await axios.get(`http://192.168.15.8:7050/playlist`, {
+      const response = await axios.get(`${URL}/playlist`, {
         headers: { Authorization: token },
       });
 

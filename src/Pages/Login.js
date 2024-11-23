@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as Keychain from "react-native-keychain";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// require('dotenv').config();
+
 import {
   Button,
   Text,
@@ -19,6 +21,8 @@ import google from "../../assets/google.png";
 import facebook from "../../assets/facebook.png";
 import apple from "../../assets/apple.png";
 // import api from "../config/api";
+import { URL } from '@env';
+
 import axios from "axios";
 export default function Sign(props) {
   const navigation = useNavigation();
@@ -40,6 +44,11 @@ export default function Sign(props) {
 
   const login = async () => {
     try {
+
+      console.log("--------------------------------------------------------------------");      
+      console.log(URL);
+      console.log("--------------------------------------------------------------------");
+
       // Criando variavel para armazenar os dados
       const data = {
         email: email,
@@ -48,7 +57,7 @@ export default function Sign(props) {
 
       // Fazendo a requisição na API para fazer o login
       const response = await axios.post(
-        "http://192.168.15.8:7050/user/login",
+        `${URL}/user/login`,
         data,
         { "Content-Type": "application/json" }
       );
