@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import React, { useState } from "react";
 import { Alert, Image, Pressable, StyleSheet, Text } from "react-native";
+import { URL } from '@env';
 
 export default function ItemPlaylist({
   imagem,
@@ -50,8 +51,8 @@ export default function ItemPlaylist({
             idPlaylist : idPlaylist
         }
 
-        const response = await axios.post(`http://192.168.15.8:7050/playmusic/`, data, {headers : {'Authorization' : token , "Content-Type": "application/json"} , } );
-
+        const response = await axios.post(`${URL}/playmusic/`, data, {headers : {'Authorization' : token , "Content-Type": "application/json"} , } );
+        
         createTwoButtonAlert("Sucesso", "Musica adicionada na playlist com sucesso !");
         navigation.navigate('Home');
         // console.log(response.data);
@@ -82,6 +83,9 @@ export default function ItemPlaylist({
         console.log("data", error.response.data.msg);
         // Adicionando a mensagem de erro na tela
         // createTwoButtonAlert(error.response.data.msg);
+        if(error.response.status === 400){
+          createTwoButtonAlert("Erro", `A musica ${nomeMusica} ja esta na playlits ${nomePlaylist}, por favor, selecione outra`);
+          }
         console.error(error.response.status);
         // if (error.response.status === 401) {
         //   navigationLink.navigate("Login");

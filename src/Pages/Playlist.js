@@ -10,7 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // require('dotenv').config();
-import { URL } from '@env';
+import { URL } from "@env";
 
 import gato from "../../assets/gato.jpg";
 import seta from "../../assets/seta-e.png";
@@ -33,8 +33,6 @@ export default function Playlist({ route, navigation }) {
   const { idPlaylist } = route.params;
   const { isPlaylistMundial } = route.params;
 
-
-
   const [imagePlaylist, setImagePlaylist] = useState("");
   const [titlePlaylist, setTitlePlaylist] = useState("");
   const [descPlaylist, setDescPlaylist] = useState("");
@@ -43,33 +41,45 @@ export default function Playlist({ route, navigation }) {
 
   const getPlaylist = async () => {
     try {
+      // Pegando o token do storage
       const token = await AsyncStorage.getItem("token");
 
+      // Criando variaveis para manipular
       var uri = "";
       var headers = {};
-      
+
+      // Validando o tipo de requisicao que ira fazer
       if (isPlaylistMundial) {
         uri = `${URL}/playlistmundial/${idPlaylist}`;
         playlistType = "PlaylistMundial";
       } else {
         uri = `${URL}/playlist/${idPlaylist}`;
         headers = { Authorization: token };
-        
       }
-      console.log("------------------------------------------------------");
-      console.log("is ?", headers);
-      console.log("------------------------------------------------------");
-      console.log("idPlaylist", idPlaylist);
-      console.log("token", token);
-      const response = await axios.get(uri, {headers : headers});
+
+      const response = await axios.get(uri, { headers: headers });
 
       if (isPlaylistMundial) {
+        console.log(
+          "------------------------------------------------------------------"
+        );
+        console.log("Dados da playlist mundial coletados com sucesso");
+        console.log(
+          "------------------------------------------------------------------"
+        );
         const playlist = response.data.PlaylistMundial;
-        console.log(playlist);
+        ;
         setImagePlaylist(playlist.imagem);
         setTitlePlaylist(playlist.nomePlaylist);
         setDescPlaylist(playlist.descricao);
-      }else {
+      } else {
+        console.log(
+          "------------------------------------------------------------------"
+        );
+        console.log("Dados da playlist coletados com sucesso");
+        console.log(
+          "------------------------------------------------------------------"
+        );
         const playlist = response.data.playlist;
         setImagePlaylist(playlist.imagem);
         setTitlePlaylist(playlist.nomePlaylist);
@@ -101,28 +111,23 @@ export default function Playlist({ route, navigation }) {
       var uri = "";
       var headers = {};
 
-      if(isPlaylistMundial){
-        uri =  `${URL}/playlistmundialmusica/getbyplaylist/${idPlaylist}`
-      }else {
-        uri = `${URL}/playmusic/getbyplaylist/${idPlaylist}`
+      if (isPlaylistMundial) {
+        uri = `${URL}/playlistmundialmusica/getbyplaylist/${idPlaylist}`;
+      } else {
+        uri = `${URL}/playmusic/getbyplaylist/${idPlaylist}`;
         headers = { Authorization: token };
-
       }
 
-      // console.log(idPlaylist);
-      const response = await axios.get(
-        uri,
-        { headers: headers }
-      );
+      
+      const response = await axios.get(uri, { headers: headers });
 
-      if(isPlaylistMundial){
+      if (isPlaylistMundial) {
         const musicas = response.data.musicasPlaylistMundial;
         setMusicas(musicas);
-      }else {
+      } else {
         const musicas = response.data.playMusic;
         setMusicas(musicas);
       }
-
     } catch (error) {
       // Tratando os erros
       if (error.response) {
@@ -153,7 +158,18 @@ export default function Playlist({ route, navigation }) {
           <Image source={seta} />
         </Pressable>
         <Text style={styles.upTitle}>FROM PLAYLIST</Text>
-        <Image source={options} />
+        <Pressable
+          onPress={() =>
+            navigationLink.navigate("Menu", {
+              imagem: imagePlaylist,
+              title: titlePlaylist,
+              isPlaylist: true,
+              idPlaylist: idPlaylist,
+            })
+          }
+        >
+          <Image source={options} />
+        </Pressable>
       </View>
 
       <View style={styles.titleContainer}>
@@ -163,30 +179,17 @@ export default function Playlist({ route, navigation }) {
       </View>
 
       <View style={styles.musics}>
-        {musicas.map(
-          async (element, index) => (
-            console.log(element),
-            console.log("element do map", element.musica.artista),
-            (
-              <MusicPlaylist
-                title={element.musica.nomeMusica}
-                artist={element.musica.artista}
-                cover={element.musica.imagemMusica}
-                idPlaylist={idPlaylist}
-                isPlaylistMundial={isPlaylistMundial}
-                idMusica={element.musica._id}
-                back={'Playlist'}
-              />
-            )
-          )
-        )}
-        {/* <MusicPlaylist
-          title={"Custer"}
-          artist={"Slipknot"}
-          cover={
-            "https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg"
-          }
-        /> */}
+        {musicas.map(async (element, index) => (
+          <MusicPlaylist
+            title={element.musica.nomeMusica}
+            artist={element.musica.artista}
+            cover={element.musica.imagemMusica}
+            idPlaylist={idPlaylist}
+            isPlaylistMundial={isPlaylistMundial}
+            idMusica={element.musica._id}
+            back={"Playlist"}
+          />
+        ))}
       </View>
     </ScrollView>
   );

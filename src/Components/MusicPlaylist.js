@@ -6,7 +6,7 @@ import options from '../../assets/options.png';
 
 export default function MusicPlaylist(props) {
     const navigation = useNavigation();
-    console.log("props cover",props.cover)
+    
     return (
         <Pressable onPress={() => navigation.navigate('Player', 
             {
@@ -37,7 +37,7 @@ export default function MusicPlaylist(props) {
                         idMusica : props.idMusica
                     }
                 );
-                // console.log("clicou nos 3 ...")
+                
             }}>
                 <Image source={options} />
             </Pressable>

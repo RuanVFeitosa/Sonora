@@ -15,7 +15,7 @@ export default function Explore(props) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.search}>
-          <Image source={Logo}/>
+          {/* <Image source={Logo}/> */}
       </View>
       <View style={styles.cards}>
         {/* Coluna da esquerda */}

@@ -63,6 +63,17 @@ export default function Home() {
   // State da foto de perfil do usuario
   const [imagemPerfil, setImagemPerfil] = useState("");
 
+  // Função para aparecer mensagem de erro na tela
+  const createTwoButtonAlert = (subTitle) =>
+    Alert.alert("Erro", subTitle, [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
+
   const getUser = async () => {
     try {
       // Pegando o token do storage
@@ -87,7 +98,11 @@ export default function Home() {
       // Criando variavel para poder manipular os dados do user
       const user = response.data.user;
 
-      console.log(user);
+      console.log("------------------------------------------------------------------");
+      console.log("Dados do usuario coletado com sucesso !");
+      console.log("------------------------------------------------------------------");
+
+      
       // Mudando o nome do state do usuario
       setNome(user.nome);
 
@@ -101,7 +116,8 @@ export default function Home() {
       if (error.response) {
         console.log("data", error.response.data.msg);
         // Adicionando a mensagem de erro na tela
-        // createTwoButtonAlert(error.response.data.msg);
+        createTwoButtonAlert(error.response.data.msg);
+        // Mensagens de erros
         console.error(error.response.status);
         console.error(error.response.headers);
       } else if (error.request) {
@@ -118,27 +134,20 @@ export default function Home() {
       // Pegando o token do storage
       const token = await AsyncStorage.getItem("token");
 
+      // Pegando todas as playlist do usuario
       const response = await axios.get(`${URL}/playlist/`, {
         headers: { Authorization: token },
       });
 
+      // Colocando as playlist no state
       setPlaylist(response.data.playlists);
 
-      // for (const playlistObj of response.data.playlists) {
-      //   // if(playlist.length > 3){
-      //   //   return null
-      //   // }
-      //   // playlist.push(playlistObj);
-      // }
-      // response.data.playlists
+      
+      console.log("------------------------------------------------------------------");
+      console.log("Playlists do usuario coletada com sucesso !");
+      console.log("------------------------------------------------------------------");
 
-      // console.log(response.data.playlists);
-
-      console.log("playlist", playlist);
-
-      // if (response.data.playlists.length === 0) {
-      //   console.log("tem nenhuma playlists");
-      // }
+    
     } catch (error) {
       // Tratando os erros
       if (error.response) {
@@ -159,14 +168,22 @@ export default function Home() {
   const getPlaylistMundial = async () => {
     try {
       // Pegando o token do storage
-      const token = await AsyncStorage.getItem("token");
+      // const token = await AsyncStorage.getItem("token");
 
+      // Pegando todas as playlists mundiais
       const response = await axios.get(
         `${URL}/playlistmundial/`
       );
+
+      // Mudando o state da playlist mundial
       setPlaylistMundial(response.data.PlayListMundial);
 
-      // console.log("Playlist mundial aqui",playlistMundial);
+      console.log("------------------------------------------------------------------");
+      console.log("Todas as playlists mundiais coletadas com sucesso !");
+      console.log("------------------------------------------------------------------");
+
+      
+      
     } catch (error) {
       // Tratando os erros
       if (error.response) {
@@ -223,9 +240,6 @@ export default function Home() {
           <View style={styles.column}>
             {playlist.map(
               (element, index) => (
-                
-                
-
                 (
                   
                   <CardHome
