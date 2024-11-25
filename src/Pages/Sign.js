@@ -50,13 +50,20 @@ export default function Sign(props) {
       });
 
       // Fazendo o login
-
       const login = await axios.post(`${URL}/user/login`, data, {"Content-Type" : "application/json"});
-      
-      
-      
+            
       // Armazenando o token
       await AsyncStorage.setItem('token', login.data.login.token);
+
+
+      const dataPlaylist = {
+        nome : "Playlist Inicial",
+        descricao : "Playlist criada para você pela Sonora",
+        imagem : "https://files.oaiusercontent.com/file-9OFkKhIUZTL7xj3l2rBVxerf?se=2024-11-25T17%3A11%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D3887e38a-59cd-4410-b231-8b40b2b1ae39.webp&sig=QPIzwOO3U6zCjhf5lOZGj1oZogZlT6iPK9hMhLNq8mM%3D"
+      }
+
+      // Criando playlist
+      const createPlaylist = await axios.post(`${URL}/playlist`, dataPlaylist, {headers : {'Content-Type' : 'application/json', 'Authorization' : login.data.login.token}});
 
       // Armazenar o id do user
       await AsyncStorage.setItem('userId', login.data.login.user);

@@ -172,7 +172,6 @@ export default function Playlist({ route, navigation }) {
           <Image source={options} />
         </Pressable>
       </View>
-
       <View style={styles.titleContainer}>
         <Image style={styles.playlist} src={imagePlaylist} />
         <Text style={styles.title}>{titlePlaylist}</Text>
@@ -181,6 +180,7 @@ export default function Playlist({ route, navigation }) {
 
       <View style={styles.musics}>
         {musicas.map(async (element, index) => (
+          console.log(element),
           <MusicPlaylist
             title={element.musica.nomeMusica}
             artist={element.musica.artista}

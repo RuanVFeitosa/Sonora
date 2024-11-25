@@ -230,20 +230,22 @@ export default function Home() {
           </View>
         </LinearGradient>
 
-        <Text style={styles.cl}>Your Playlist</Text>
-        <View style={styles.cards}>
-          <View style={styles.column}>
-            {/* <Icon name="add" size={30} color={"white"} /> */}
+        <View style={{paddingLeft:20, paddingRight:20}}>
+          <Text style={styles.cl}>Your Playlist</Text>
+          <View style={styles.cards}>
+            <View style={styles.column}>
+              {/* <Icon name="add" size={30} color={"white"} /> */}
 
-            {playlist.map((element, index) => (
-              <CardHome
-                key={index}
-                title={element.nome}
-                image={element.imagem}
-                pressable={"Playlist"}
-                idPlaylist={element._id}
-              />
-            ))}
+              {playlist.map((element, index) => (
+                <CardHome
+                  key={index}
+                  title={element.nome}
+                  image={element.imagem}
+                  pressable={"Playlist"}
+                  idPlaylist={element._id}
+                />
+              ))}
+            </View>
           </View>
         </View>
 
@@ -341,13 +343,18 @@ const styles = StyleSheet.create({
   cards: {
     flexDirection: "row",
     justifyContent: "space-between",
-    bottom: 70,
+    marginBottom:20
+    // bottom: 70,
+
     // backgroundColor : 'black'
   },
   column: {
     // display: 'grid',
     // flex: 1,
     flexDirection: "row",
+    width : "100%",
+    justifyContent : 'space-between',
+    // backgroundColor : 'red',
     // alignItems: 'center',
     flexWrap: "wrap",
   },

@@ -7,8 +7,8 @@ export default function CardHome(props) {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.cards}>
-      {/* Coluna da esquerda */}
+    //  <View style={styles.cards}>
+      
       <View style={styles.column}>
         <Pressable onPress={() => navigation.navigate(props.pressable, 
           {
@@ -22,20 +22,23 @@ export default function CardHome(props) {
           </View>
         </Pressable>
       </View>
-    </View>
+    /* </View> */
   )
 }
 
 const styles = StyleSheet.create({
   cards: {
     flexDirection: 'row',
+    backgroundColor : 'red',
     justifyContent: 'space-between',
-    bottom: 140,
+    // width : "100%",
+    // bottom: 140,
   },
   column: {
     // display: 'grid',
     // flex: 1,
     flexDirection: 'row',
+    
     // alignItems: 'center',
     flexWrap: 'wrap'
   },
@@ -43,24 +46,27 @@ const styles = StyleSheet.create({
   cd1: {
     display: 'flex',
     alignItems: 'center',
-    width: 180,
+    width: 160,
     flexDirection: 'row',
-    height: 50,
-    borderRadius: 20,
+    height: 55,
+    borderRadius: 10,
     // left: 10,
 
     backgroundColor: 'rgba(67, 99, 105, 0.2)',
-    marginTop: 46,
+    marginBottom: 20,
   },
   imgc1: {
     width: 53,
-    height: 54,
+    height: '100%',
     borderRadius: 10,
-    left: 2,
+    // left: 2,
   },
 
   textc1: {
+    maxWidth:'60%',
     color: 'white',
+    fontSize:20,
+    justifyContent:'center',
     left: 10,
   },
 })

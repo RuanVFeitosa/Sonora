@@ -184,14 +184,15 @@ const styles = StyleSheet.create({
   },
   editText: {
     // left: 20,
+    marginRight:8,
     color: "black",
   },
   profile: {
-    width: 104,
-    height: 116,
+    width: 115,
+    height: 115,
     // top: 140,
     // left: 140,
-    borderRadius: 50,
+    borderRadius: 70,
     // marginRight: 10,
   },
   name: {

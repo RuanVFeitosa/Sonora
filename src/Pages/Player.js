@@ -34,6 +34,9 @@ export default function Player({ route }) {
   const gostarMusica = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
+
+      console.log("idMusica aqui", idMusica);
+
       // setIsMusicFavorite(true);
       if (!isMusicFavorite) {
         // setIsMusicFavorite(true);
@@ -52,14 +55,13 @@ export default function Player({ route }) {
         );
         setIsMusicFavorite(true);
         setIconHeart("heart");
-        console.log(response.data);
+        console.log("response aqui",response.data);
       } else {
         // Criando delete pela id da musica la no back end
         const response = await axios.delete(
           `${URL}/musicfavorita/deletebymusic/${idMusica}`,
           { headers: { Authorization: token } }
         );
-        console.log(response.data);
         setIsMusicFavorite(false);
         setIconHeart("heart-outline");
       }
@@ -90,7 +92,7 @@ export default function Player({ route }) {
     try {
       
       const token = await AsyncStorage.getItem("token");
-
+      console.log("idmusica aqui", idMusica);
       const response = await axios.get(
         `${URL}/musicfavorita/getbymusic/${idMusica}`, { headers: { Authorization: token } }
       );
@@ -101,6 +103,8 @@ export default function Player({ route }) {
         setIsMusicFavorite(true);
         setIconHeart('heart')
       }
+
+      console.log(response.data)
 
       // console.log(response.status);
     } catch (error) {
