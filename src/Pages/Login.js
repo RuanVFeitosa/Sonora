@@ -63,7 +63,7 @@ export default function Sign(props) {
       );
 
       // Armazenando o token
-      await AsyncStorage.setItem("token", response.data.login);
+      await AsyncStorage.setItem("token", response.data.login.token);
       navigation.navigate("Home");
       // console.log(await AsyncStorage.getItem('token'));
     } catch (error) {
