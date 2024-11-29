@@ -14,6 +14,8 @@ import {
   Alert,
   ScrollView,
   SafeAreaView,
+  ActivityIndicator,
+  Modal,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../assets/Logo-sf.png";
@@ -21,7 +23,7 @@ import google from "../../assets/google.png";
 import facebook from "../../assets/facebook.png";
 import apple from "../../assets/apple.png";
 // import api from "../config/api";
-import { URL } from '@env';
+import { URL } from "@env";
 
 import axios from "axios";
 export default function Sign(props) {
@@ -30,6 +32,7 @@ export default function Sign(props) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Função para aparecer mensagem de erro na tela
   const createTwoButtonAlert = (subTitle) =>
@@ -42,12 +45,35 @@ export default function Sign(props) {
       { text: "OK", onPress: () => console.log("OK Pressed") },
     ]);
 
+    const validateData = async (data) => {
+
+      if (!data.email) {
+        return {
+          isValid: false,
+          msg: "Envie o email",
+        };
+      }
+  
+      if (!data.senha) {
+        return {
+          isValid: false,
+          msg: "Envie a senha",
+        };
+      }
+      return {
+        isValid: true,
+      };
+    };
+
   const login = async () => {
     try {
-
-      console.log("--------------------------------------------------------------------");      
+      console.log(
+        "--------------------------------------------------------------------"
+      );
       console.log(URL);
-      console.log("--------------------------------------------------------------------");
+      console.log(
+        "--------------------------------------------------------------------"
+      );
 
       // Criando variavel para armazenar os dados
       const data = {
@@ -55,23 +81,35 @@ export default function Sign(props) {
         senha: password,
       };
 
-      // Fazendo a requisição na API para fazer o login
-      const response = await axios.post(
-        `${URL}/user/login`,
-        data,
-        { "Content-Type": "application/json" }
-      );
+      // Validando se os dados estão corretos
+    const dataIsValid = await validateData(data);
 
+    if (!dataIsValid.isValid) {
+      return createTwoButtonAlert(dataIsValid.msg);
+    }
+
+      // Fazendo a requisição na API para fazer o login
+      setLoading(true);
+      const response = await axios.post(`${URL}/user/login`, data, {
+        "Content-Type": "application/json",
+      });
+      setLoading(false);
+
+      const token = response.data.login.token;
       // Armazenando o token
       await AsyncStorage.setItem("token", response.data.login.token);
+      // Armazenando o id do usuario
+      await AsyncStorage.setItem("userId", response.data.login.user);
       navigation.navigate("Home");
-      // console.log(await AsyncStorage.getItem('token'));
     } catch (error) {
       // Tratando os erros
       if (error.response) {
         console.log("data", error.response.data.msg);
         // Adicionando a mensagem de erro na tela
         createTwoButtonAlert(error.response.data.msg);
+        setLoading(false);
+        
+
         console.error(error.response.status);
         console.error(error.response.headers);
       } else if (error.request) {
@@ -83,21 +121,19 @@ export default function Sign(props) {
     }
   };
 
-  
-
   return (
-    
     <>
-  
-      <ScrollView  contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" scrollEnabled={false}>
-       
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+        scrollEnabled={false}
+      >
         <View style={styles.containerView}>
           <Text style={styles.title}>Login to your account</Text>
 
           {/* Formulário de Login */}
           <TextInput
             style={styles.input}
-            
             placeholder="Email"
             placeholderTextColor="#aaaaaa"
             value={email}
@@ -113,6 +149,13 @@ export default function Sign(props) {
             onChangeText={setPassword}
             secureTextEntry={true}
           />
+          <Modal transparent = {true} visible = {loading}>
+            <ActivityIndicator
+              size={"large"}
+              animating={loading}
+              style = {styles.loading}
+            />
+          </Modal>
 
           <Pressable style={styles.button} onPress={() => login()}>
             <Text style={styles.textButton}>{title}</Text>
@@ -153,6 +196,19 @@ export default function Sign(props) {
 }
 
 const styles = StyleSheet.create({
+  loading: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    backgroundColor: "black",
+    zIndex: 1,
+    opacity: 0.7,
+  },
+  signUpButton: {
+    backgroundColor: "transparent",
+    padding: 0,
+    margin: 0,
+  },
   msgErroOculta: {
     display: "none",
     // color : 'white'
@@ -164,22 +220,22 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     // alignItems: "center",
-    justifyContent : 'center',
+    justifyContent: "center",
     // flex: 3,
-    flex : 1,
+    flex: 1,
     // height : '100%',
     backgroundColor: "#000000",
   },
 
-  containerView : {
+  containerView: {
     // display : 'flex',
     // flexGrow : 1,
-    justifyContent : 'center',
+    justifyContent: "center",
     // alignContent : 'center',
-    alignItems: 'center',
+    alignItems: "center",
     // backgroundColor : 'blue',
-    height : '100%',
-    flex : 1,
+    height: "100%",
+    flex: 1,
 
     // marginTop : 10
   },
@@ -243,8 +299,8 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
@@ -265,12 +321,14 @@ const styles = StyleSheet.create({
   account: {
     alignItems: "center",
     color: "white",
-    // marginTop: 20,
+    // marginTop: 10,
   },
 
   textSignUp: {
     // marginLeft: 10,
+    // marginTop :10,
     color: "white",
     fontWeight: "bold",
+    // left : 10,
   },
 });

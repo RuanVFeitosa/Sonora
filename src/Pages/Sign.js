@@ -8,8 +8,10 @@ import {
   Pressable,
   TextInput,
   Alert,
+  Modal,
+  ActivityIndicator,
 } from "react-native";
-import { URL } from '@env';
+import { URL } from "@env";
 
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../assets/Logo-sf.png";
@@ -17,7 +19,7 @@ import google from "../../assets/google.png";
 import facebook from "../../assets/facebook.png";
 import apple from "../../assets/apple.png";
 import axios from "axios";
-import  AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // require('dotenv').config();
 export default function Sign(props) {
   const navigation = useNavigation();
@@ -25,6 +27,8 @@ export default function Sign(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nome, setNome] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   const createTwoButtonAlert = (subTitle) =>
     Alert.alert("Erro", subTitle, [
@@ -36,41 +40,82 @@ export default function Sign(props) {
       { text: "OK", onPress: () => console.log("OK Pressed") },
     ]);
 
+  const validateData = async (data) => {
+    if (!data.nome) {
+      return {
+        isValid: false,
+        msg: "Envie o nome",
+      };
+    }
+
+    if (!data.email) {
+      return {
+        isValid: false,
+        msg: "Envie o email",
+      };
+    }
+
+    if (!data.senha) {
+      return {
+        isValid: false,
+        msg: "Envie a senha",
+      };
+    }
+    return {
+      isValid: true,
+    };
+  };
+
   const cadastro = async () => {
     const data = {
       nome: nome,
       email: email,
       senha: password,
     };
-    try {
 
+    // Validando se os dados estão corretos
+    const dataIsValid = await validateData(data);
+
+    if (!dataIsValid.isValid) {
+      return createTwoButtonAlert(dataIsValid.msg);
+    }
+
+    try {
       // Criando a conta
+      setLoading(true);
       const response = await axios.post(`${URL}/user`, data, {
         "Content-Type": "application/json",
       });
+      setLoading(false);
 
       // Fazendo o login
-      const login = await axios.post(`${URL}/user/login`, data, {"Content-Type" : "application/json"});
-            
-      // Armazenando o token
-      await AsyncStorage.setItem('token', login.data.login.token);
+      const login = await axios.post(`${URL}/user/login`, data, {
+        "Content-Type": "application/json",
+      });
 
+      // Armazenando o token
+      await AsyncStorage.setItem("token", login.data.login.token);
 
       const dataPlaylist = {
-        nome : "Playlist Inicial",
-        descricao : "Playlist criada para você pela Sonora",
-        imagem : "https://files.oaiusercontent.com/file-9OFkKhIUZTL7xj3l2rBVxerf?se=2024-11-25T17%3A11%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D3887e38a-59cd-4410-b231-8b40b2b1ae39.webp&sig=QPIzwOO3U6zCjhf5lOZGj1oZogZlT6iPK9hMhLNq8mM%3D"
-      }
+        nome: "Playlist Inicial",
+        descricao: "Playlist criada para você pela Sonora",
+        imagem:
+          "https://files.oaiusercontent.com/file-9OFkKhIUZTL7xj3l2rBVxerf?se=2024-11-25T17%3A11%3A15Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D3887e38a-59cd-4410-b231-8b40b2b1ae39.webp&sig=QPIzwOO3U6zCjhf5lOZGj1oZogZlT6iPK9hMhLNq8mM%3D",
+      };
 
       // Criando playlist
-      const createPlaylist = await axios.post(`${URL}/playlist`, dataPlaylist, {headers : {'Content-Type' : 'application/json', 'Authorization' : login.data.login.token}});
+      const createPlaylist = await axios.post(`${URL}/playlist`, dataPlaylist, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: login.data.login.token,
+        },
+      });
 
       // Armazenar o id do user
-      await AsyncStorage.setItem('userId', login.data.login.user);
+      await AsyncStorage.setItem("userId", login.data.login.user);
 
       // Indo para o home
-      navigation.navigate('Home');
-
+      navigation.navigate("Home");
 
       console.log(response.data);
     } catch (error) {
@@ -79,6 +124,8 @@ export default function Sign(props) {
         console.log("data", error.response.data.msg);
         // Adicionando a mensagem de erro na tela
         createTwoButtonAlert(error.response.data.msg);
+        setLoading(false);
+
         console.error(error.response.status);
         console.error(error.response.headers);
       } else if (error.request) {
@@ -126,7 +173,13 @@ export default function Sign(props) {
           onChangeText={setPassword}
           secureTextEntry={true}
         />
-
+        <Modal transparent={true} visible={loading}>
+          <ActivityIndicator
+            animating={loading}
+            size={"large"}
+            style={styles.loading}
+          />
+        </Modal>
         <Pressable style={styles.button} onPress={() => cadastro()}>
           <Text style={styles.textButton}>{title}</Text>
         </Pressable>
@@ -162,16 +215,25 @@ export default function Sign(props) {
 }
 
 const styles = StyleSheet.create({
+  loading: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    backgroundColor: "black",
+    zIndex: 1,
+    opacity: 0.7,
+  },
   container: {
     display: "flex",
     alignItems: "center",
-    flex: 3,
+    justifyContent: "center",
+    flex: 1,
     backgroundColor: "#000000",
   },
 
   image: {
-    justifyContent: "center",
-    alignItems: "center",
+    // justifyContent: "center",
+    // alignItems: "center",
     width: 370,
     height: 300,
   },
@@ -202,7 +264,7 @@ const styles = StyleSheet.create({
   },
 
   containerInfo: {
-    top: 50,
+    top: 30,
     display: "flex",
   },
 

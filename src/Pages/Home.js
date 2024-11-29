@@ -79,10 +79,10 @@ export default function Home() {
     try {
       // Pegando o token do storage
       const token = await AsyncStorage.getItem("token");
-
       if (!token) {
-        console.error("Token não encontrado.");
-        return; // Sai da função se o token não for encontrado
+        console.error("Token não encontrado");
+        // Sai da função se o token não for encontrado
+        return navigation.navigate("Login");
       }
 
       // Mudando o token do state do usuario
@@ -90,6 +90,11 @@ export default function Home() {
 
       // Pegando o id do user no storage
       const userId = await AsyncStorage.getItem("userId");
+      if (!userId) {
+        console.error("Id do usuario não encontrado");
+        // Sai da função se o id do usuario não for encontrado
+        return navigation.navigate("Login");
+      }
 
       // Pegando os dados do usuario na api
       const response = await axios.get(`${URL}/user/${userId}`);
@@ -230,7 +235,7 @@ export default function Home() {
           </View>
         </LinearGradient>
 
-        <View style={{paddingLeft:20, paddingRight:20}}>
+        <View style={{ paddingLeft: 20, paddingRight: 20 }}>
           <Text style={styles.cl}>Your Playlist</Text>
           <View style={styles.cards}>
             <View style={styles.column}>
@@ -343,7 +348,7 @@ const styles = StyleSheet.create({
   cards: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom:20
+    marginBottom: 20,
     // bottom: 70,
 
     // backgroundColor : 'black'
@@ -352,8 +357,8 @@ const styles = StyleSheet.create({
     // display: 'grid',
     // flex: 1,
     flexDirection: "row",
-    width : "100%",
-    justifyContent : 'space-between',
+    width: "100%",
+    justifyContent: "space-between",
     // backgroundColor : 'red',
     // alignItems: 'center',
     flexWrap: "wrap",
