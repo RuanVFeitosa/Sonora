@@ -85,6 +85,9 @@ export default function MenuOptions({idPlaylist, title, idMusic, nameFunction}) 
 
 const styles = StyleSheet.create({
   menuOptions: {
+    width : '100%',
+    justifyContent : 'space-between',
+    backgroundColor : 'red',
     color: "white",
     padding: 20,
   },

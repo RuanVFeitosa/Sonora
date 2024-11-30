@@ -1,59 +1,69 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // require('dotenv').config();
-import { URL } from '@env';
+import { URL } from "@env";
 
-import { Text, View, StyleSheet, Image, FlatList, StatusBar, SafeAreaView, SectionList, ScrollView, Pressable } from 'react-native';
-import seta from '../../assets/seta-e.png';
-import options from '../../assets/options.png';
-import slipknot from '../../assets/slipknot.jpg'; // Capa de exemplo
-import gato from '../../assets/gato.jpg';
-import MusicPlaylist from '../Components/MusicPlaylist';
-import axios from 'axios';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  FlatList,
+  StatusBar,
+  SafeAreaView,
+  SectionList,
+  ScrollView,
+  Pressable,
+} from "react-native";
+import seta from "../../assets/seta-e.png";
+import options from "../../assets/options.png";
+import slipknot from "../../assets/slipknot.jpg"; // Capa de exemplo
+import gato from "../../assets/gato.jpg";
+import MusicPlaylist from "../Components/MusicPlaylist";
+import axios from "axios";
+import Loading from "../Components/Loading";
 
 const musicData = [
-  { id: '1', title: 'Custer', artist: 'Slipknot', cover: slipknot },
-  { id: '2', title: 'Música 2', artist: 'Artista 2', cover: slipknot },
-  { id: '3', title: 'Música 3', artist: 'Artista 3', cover: slipknot },
-  { id: '4', title: 'Música 4', artist: 'Artista 3', cover: slipknot },
+  { id: "1", title: "Custer", artist: "Slipknot", cover: slipknot },
+  { id: "2", title: "Música 2", artist: "Artista 2", cover: slipknot },
+  { id: "3", title: "Música 3", artist: "Artista 3", cover: slipknot },
+  { id: "4", title: "Música 4", artist: "Artista 3", cover: slipknot },
   // Adicione mais músicas conforme necessário
 ];
 
 export default function Favorites() {
   const navigation = useNavigation();
 
-  const [id,setId] = useState("");
-  const [token,setToken] = useState("");
-  const [musica,setMusica] = useState([]);
-  
+  const [id, setId] = useState("");
+  const [token, setToken] = useState("");
+  const [musica, setMusica] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getMusicasFavoritas = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
-
+      const token = await AsyncStorage.getItem("token");
+      if (!token) {
+        console.error("Token não encontrado");
+        // Sai da função se o token não for encontrado
+        return navigation.navigate("Login");
+      }
       setToken(token);
 
-      console.log(token);
-
-      const response = await axios.get(`${URL}/musicfavorita/`, {headers : {'Authorization' : token}});
-
+      const response = await axios.get(`${URL}/musicfavorita/`, {
+        headers: { Authorization: token },
+      });
 
       setMusica(response.data.musicasFavoritas);
-      
-
-
-      // setMusica(response.data.musicasFavortias);
-      console.log(response.data.musicasFavoritas)
     } catch (error) {
-      // Tratando os erross
+      // Tratando os erros
       if (error.response) {
         console.log("data", error.response.data.msg);
         // Adicionando a mensagem de erro na tela
         // createTwoButtonAlert(error.response.data.msg);
         console.error(error.response.status);
-        if(error.response.status === 401){
-          navigation.navigate('Login');
+        if (error.response.status === 401) {
+          navigation.navigate("Login");
         }
         console.error(error.response.headers);
       } else if (error.request) {
@@ -63,17 +73,22 @@ export default function Favorites() {
       }
       console.error(error.config);
     }
-  }
+  };
 
   useEffect(() => {
-    getMusicasFavoritas();
+    const loadData = async () => {
+      setLoading(true);
+      await getMusicasFavoritas();
+      setLoading(false);
+    };
+    loadData();
   }, []);
-
 
   return (
     <ScrollView style={styles.container}>
+      <Loading loading={loading} />
       <View style={styles.opcao}>
-        <Pressable onPress={() => navigation.navigate('Profile')} >
+        <Pressable onPress={() => navigation.navigate("Profile")}>
           <Image source={seta} />
         </Pressable>
         <Text style={styles.upTitle}>Favorites</Text>
@@ -84,7 +99,6 @@ export default function Favorites() {
         <View style={styles.line} />
       </View>
       <View style={styles.musics}>
-
         {/* {musica.forEach(element => {
           console.log("elemento do array",element);
         <MusicPlaylist title={'Custer'} artist={'Slipknot'} cover={'https://m.media-amazon.com/images/I/81uUbACgxQL._UF894,1000_QL80_.jpg'} /> 
@@ -92,20 +106,21 @@ export default function Favorites() {
           
         })} */}
 
-{musica.map((element, index) => (
-  console.log(element.musica.imagemMusica),
-  <MusicPlaylist 
-    key={index} // Sempre adicione uma chave única para listas
-    title={element.musica.nomeMusica} 
-    artist={element.musica.artista} 
-    cover={element.musica.imagemMusica}
-    idMusica={element.musica._id} 
-    back={'Fav'}
-  />
-))}
-
-        
-        
+        {musica.map(
+          (element, index) => (
+            console.log(element.musica.imagemMusica),
+            (
+              <MusicPlaylist
+                key={index} // Sempre adicione uma chave única para listas
+                title={element.musica.nomeMusica}
+                artist={element.musica.artista}
+                cover={element.musica.imagemMusica}
+                idMusica={element.musica._id}
+                back={"Fav"}
+              />
+            )
+          )
+        )}
 
         {/* {musica.map((item, index) => {
                   <Text style={styles.textLine} key={index} >{musica.length} liked songs</Text>
@@ -119,31 +134,31 @@ export default function Favorites() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: "#000000",
   },
 
   titleContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 30,
   },
 
   opcao: {
     flex: 1,
     padding: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 30,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 
   upTitle: {
     marginTop: 20,
     fontSize: 24,
-    color: 'white',
-    alignSelf: 'center',
+    color: "white",
+    alignSelf: "center",
     right: 180,
     bottom: 13,
   },
@@ -151,30 +166,30 @@ const styles = StyleSheet.create({
   liked: {
     lineHeight: 20,
     fontSize: 16,
-    color: 'white'
+    color: "white",
   },
 
   containerInfo: {
     top: 50,
-    display: 'flex',
+    display: "flex",
   },
 
   containerLine: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingBottom: 20,
   },
 
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
 
   textLine: {
     marginHorizontal: 10,
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
   },
 
   playlist: {
@@ -185,22 +200,22 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 30,
-    color: 'white'
+    color: "white",
   },
 
   tags: {
     fontSize: 13,
-    color: 'white'
+    color: "white",
   },
 
   musics: {
-    flexDirection: 'column',
+    flexDirection: "column",
     margin: 30,
   },
 
   list: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 10,
   },
 
@@ -216,12 +231,12 @@ const styles = StyleSheet.create({
   },
 
   musicTitle: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
   },
 
   artist: {
     fontSize: 12,
-    color: 'grey',
+    color: "grey",
   },
 });

@@ -18,6 +18,7 @@ import options from "../../assets/options.png";
 import slipknot from "../../assets/slipknot.jpg"; // Capa de exemplo
 import MusicPlaylist from "../Components/MusicPlaylist";
 import axios from "axios";
+import Loading from "../Components/Loading";
 
 // const musicData = [
 //     { id: '1', title: 'Custer', artist: 'Slipknot', cover: slipknot },
@@ -38,6 +39,8 @@ export default function Playlist({ route, navigation }) {
   const [descPlaylist, setDescPlaylist] = useState("");
 
   const [musicas, setMusicas] = useState([]);
+
+  const [loading, setLoading] = useState(false);
 
   const getPlaylist = async () => {
     try {
@@ -63,12 +66,14 @@ export default function Playlist({ route, navigation }) {
         console.log(
           "------------------------------------------------------------------"
         );
-        console.log("Dados da playlist mundial coletados com sucesso",response.data.PlaylistMundial);
+        console.log(
+          "Dados da playlist mundial coletados com sucesso",
+          response.data.PlaylistMundial
+        );
         console.log(
           "------------------------------------------------------------------"
         );
         const playlist = response.data.PlaylistMundial;
-        ;
         setImagePlaylist(playlist.imagem);
         setTitlePlaylist(playlist.nome);
         setDescPlaylist(playlist.descricao);
@@ -118,7 +123,6 @@ export default function Playlist({ route, navigation }) {
         headers = { Authorization: token };
       }
 
-      
       const response = await axios.get(uri, { headers: headers });
 
       if (isPlaylistMundial) {
@@ -147,8 +151,13 @@ export default function Playlist({ route, navigation }) {
   };
 
   useEffect(() => {
-    getPlaylist();
-    getMusics();
+    const loadData = async () => {
+      setLoading(true);
+      await getPlaylist();
+      await getMusics();
+      setLoading(false);
+    };
+    loadData();
   }, []);
 
   return (
@@ -165,7 +174,6 @@ export default function Playlist({ route, navigation }) {
               title: titlePlaylist,
               isPlaylist: true,
               idPlaylist: idPlaylist,
-
             })
           }
         >
@@ -177,21 +185,26 @@ export default function Playlist({ route, navigation }) {
         <Text style={styles.title}>{titlePlaylist}</Text>
         <Text style={styles.tags}> {descPlaylist}</Text>
       </View>
+      <Loading loading={loading} />
 
       <View style={styles.musics}>
-        {musicas.map(async (element, index) => (
-          console.log(element),
-          <MusicPlaylist
-            title={element.musica.nomeMusica}
-            artist={element.musica.artista}
-            cover={element.musica.imagemMusica}
-            idPlaylist={idPlaylist}
-            isPlaylistMundial={isPlaylistMundial}
-            idMusica={element.musica._id}
-            back={"Playlist"}
-            nomePlaylist={titlePlaylist}
-          />
-        ))}
+        {musicas.map(
+          async (element, index) => (
+            console.log(element),
+            (
+              <MusicPlaylist
+                title={element.musica.nomeMusica}
+                artist={element.musica.artista}
+                cover={element.musica.imagemMusica}
+                idPlaylist={idPlaylist}
+                isPlaylistMundial={isPlaylistMundial}
+                idMusica={element.musica._id}
+                back={"Playlist"}
+                nomePlaylist={titlePlaylist}
+              />
+            )
+          )
+        )}
       </View>
     </ScrollView>
   );

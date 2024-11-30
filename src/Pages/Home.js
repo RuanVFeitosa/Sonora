@@ -10,6 +10,8 @@ import {
   SectionList,
   ScrollView,
   Pressable,
+  Modal,
+  ActivityIndicator,
 } from "react-native";
 // require('dotenv').config();
 import { LinearGradient } from "expo-linear-gradient";
@@ -28,6 +30,7 @@ import axios from "axios";
 import CardPlaylist from "../Components/CardPlaylist";
 
 import Icon from "react-native-vector-icons/Ionicons";
+import Loading from "../Components/Loading";
 const ListItem = ({ item }) => {
   return (
     <View style={styles.item}>
@@ -64,6 +67,8 @@ export default function Home() {
   // State da foto de perfil do usuario
   const [imagemPerfil, setImagemPerfil] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   // Função para aparecer mensagem de erro na tela
   const createTwoButtonAlert = (subTitle) =>
     Alert.alert("Erro", subTitle, [
@@ -97,7 +102,9 @@ export default function Home() {
       }
 
       // Pegando os dados do usuario na api
+      // setLoading(true);
       const response = await axios.get(`${URL}/user/${userId}`);
+      // setLoading(false);
 
       // Criando variavel para poder manipular os dados do user
       const user = response.data.user;
@@ -141,10 +148,18 @@ export default function Home() {
       // Pegando o token do storage
       const token = await AsyncStorage.getItem("token");
 
+      if (!token) {
+        console.error("Token não encontrado");
+        // Sai da função se o token não for encontrado
+        return navigation.navigate("Login");
+      }
+
       // Pegando todas as playlist do usuario
+      // setLoading(true);
       const response = await axios.get(`${URL}/playlist/`, {
         headers: { Authorization: token },
       });
+      // setLoading(false);
 
       // Colocando as playlist no state
       setPlaylist(response.data.playlists);
@@ -179,8 +194,9 @@ export default function Home() {
       // const token = await AsyncStorage.getItem("token");
 
       // Pegando todas as playlists mundiais
+      // setLoading(true);
       const response = await axios.get(`${URL}/playlistmundial/`);
-
+      // setLoading(false);
       // Mudando o state da playlist mundial
       setPlaylistMundial(response.data.PlayListMundial);
 
@@ -210,9 +226,11 @@ export default function Home() {
 
   useEffect(() => {
     const loadData = async () => {
+      setLoading(true);
       await getUser();
       await getPlaylist();
       await getPlaylistMundial();
+      setLoading(false);
     };
 
     loadData();
@@ -234,7 +252,7 @@ export default function Home() {
             </View>
           </View>
         </LinearGradient>
-
+        <Loading loading={loading} />
         <View style={{ paddingLeft: 20, paddingRight: 20 }}>
           <Text style={styles.cl}>Your Playlist</Text>
           <View style={styles.cards}>

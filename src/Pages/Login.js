@@ -26,6 +26,7 @@ import apple from "../../assets/apple.png";
 import { URL } from "@env";
 
 import axios from "axios";
+import Loading from "../Components/Loading";
 export default function Sign(props) {
   const navigation = useNavigation();
   const { title = "Enter" } = props;
@@ -45,25 +46,24 @@ export default function Sign(props) {
       { text: "OK", onPress: () => console.log("OK Pressed") },
     ]);
 
-    const validateData = async (data) => {
-
-      if (!data.email) {
-        return {
-          isValid: false,
-          msg: "Envie o email",
-        };
-      }
-  
-      if (!data.senha) {
-        return {
-          isValid: false,
-          msg: "Envie a senha",
-        };
-      }
+  const validateData = async (data) => {
+    if (!data.email) {
       return {
-        isValid: true,
+        isValid: false,
+        msg: "Envie o email",
       };
+    }
+
+    if (!data.senha) {
+      return {
+        isValid: false,
+        msg: "Envie a senha",
+      };
+    }
+    return {
+      isValid: true,
     };
+  };
 
   const login = async () => {
     try {
@@ -82,11 +82,11 @@ export default function Sign(props) {
       };
 
       // Validando se os dados estão corretos
-    const dataIsValid = await validateData(data);
+      const dataIsValid = await validateData(data);
 
-    if (!dataIsValid.isValid) {
-      return createTwoButtonAlert(dataIsValid.msg);
-    }
+      if (!dataIsValid.isValid) {
+        return createTwoButtonAlert(dataIsValid.msg);
+      }
 
       // Fazendo a requisição na API para fazer o login
       setLoading(true);
@@ -108,7 +108,6 @@ export default function Sign(props) {
         // Adicionando a mensagem de erro na tela
         createTwoButtonAlert(error.response.data.msg);
         setLoading(false);
-        
 
         console.error(error.response.status);
         console.error(error.response.headers);
@@ -149,13 +148,7 @@ export default function Sign(props) {
             onChangeText={setPassword}
             secureTextEntry={true}
           />
-          <Modal transparent = {true} visible = {loading}>
-            <ActivityIndicator
-              size={"large"}
-              animating={loading}
-              style = {styles.loading}
-            />
-          </Modal>
+          <Loading loading={loading} />
 
           <Pressable style={styles.button} onPress={() => login()}>
             <Text style={styles.textButton}>{title}</Text>
@@ -196,14 +189,6 @@ export default function Sign(props) {
 }
 
 const styles = StyleSheet.create({
-  loading: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    backgroundColor: "black",
-    zIndex: 1,
-    opacity: 0.7,
-  },
   signUpButton: {
     backgroundColor: "transparent",
     padding: 0,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   Text,
@@ -26,6 +26,7 @@ import CardProfile from "../Components/CardProfile";
 import CardHome from "../Components/CardHome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import Loading from "../Components/Loading";
 
 export default function Profile() {
   const navigation = useNavigation();
@@ -42,16 +43,26 @@ export default function Profile() {
   // State da imagem de perfil do usuario
   const [fotoPerfil, setFotoPerfil] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const getUser = async () => {
     try {
       // Pegando o token do storage
       const token = await AsyncStorage.getItem("token");
+      if (!token) {
+        console.error("Token não encontrado");
+        // Sai da função se o token não for encontrado
+        return navigation.navigate("Login");
+      }
 
-      // Mudando o token do state do usuario
-      // await setToken(token);
 
       // Pegando o id do user no storage
       const userId = await AsyncStorage.getItem("userId");
+      if (!userId) {
+        console.error("Id do usuario não encontrado");
+        // Sai da função se o id não for encontrado
+        return navigation.navigate("Login");
+      }
 
       // Pegando os dados do usuario na api
       const response = await axios.get(`${URL}/user/${userId}`);
@@ -88,7 +99,13 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    getUser();
+    const loadData = async () => {
+      setLoading(true);
+      await getUser();
+      setLoading(false);
+    };
+
+    loadData();
   }, []);
   return (
     <LinearGradient
@@ -97,15 +114,16 @@ export default function Profile() {
       end={{ x: 0, y: 1 }}
       style={styles.container}
     >
+      <Loading loading={loading} />
       <View style={styles.navBar}>
         <Text style={styles.title}>My Profile</Text>
-        <Pressable
+        {/* <Pressable
           style={styles.edit}
           onPress={() => navigation.navigate("Edit")}
         >
           <Icon style={styles.editIcon} name="pencil" />
           <Text style={styles.editText}>Edit</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
 
       <View style={styles.information}>
@@ -122,11 +140,11 @@ export default function Profile() {
             icon={"add"}
             pressable={"Create Playlist"}
           />
-          <CardProfile
+          {/* <CardProfile
             title={"Playlist"}
             icon={"musical-notes"}
             pressable={"Explore"}
-          />
+          /> */}
         </View>
       </View>
     </LinearGradient>
@@ -138,10 +156,10 @@ const styles = StyleSheet.create({
     // backgroundColor: "blue",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems : 'center',
+    alignItems: "center",
     position: "absolute",
-    width : "100%",
-    marginTop : 40,
+    width: "100%",
+    marginTop: 40,
     top: 0,
   },
   information: {
@@ -159,7 +177,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     // left: 40,
-    marginLeft : 20,
+    marginLeft: 20,
     // top: 40,
     color: "white",
   },
@@ -172,7 +190,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 5,
     flexDirection: "row",
-    marginRight : 20,
+    marginRight: 20,
     // top: 3,
     // left: 300,
   },
@@ -184,7 +202,7 @@ const styles = StyleSheet.create({
   },
   editText: {
     // left: 20,
-    marginRight:8,
+    marginRight: 8,
     color: "black",
   },
   profile: {
@@ -216,7 +234,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   column: {
-    
     flexDirection: "row",
     justifyContent: "space-between",
   },

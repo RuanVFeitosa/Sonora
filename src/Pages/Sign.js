@@ -20,6 +20,7 @@ import facebook from "../../assets/facebook.png";
 import apple from "../../assets/apple.png";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loading from "../Components/Loading";
 // require('dotenv').config();
 export default function Sign(props) {
   const navigation = useNavigation();
@@ -173,13 +174,9 @@ export default function Sign(props) {
           onChangeText={setPassword}
           secureTextEntry={true}
         />
-        <Modal transparent={true} visible={loading}>
-          <ActivityIndicator
-            animating={loading}
-            size={"large"}
-            style={styles.loading}
-          />
-        </Modal>
+
+        <Loading loading={loading}/>
+
         <Pressable style={styles.button} onPress={() => cadastro()}>
           <Text style={styles.textButton}>{title}</Text>
         </Pressable>
@@ -215,14 +212,6 @@ export default function Sign(props) {
 }
 
 const styles = StyleSheet.create({
-  loading: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    backgroundColor: "black",
-    zIndex: 1,
-    opacity: 0.7,
-  },
   container: {
     display: "flex",
     alignItems: "center",
