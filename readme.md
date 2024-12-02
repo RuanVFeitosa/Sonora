@@ -31,5 +31,5 @@ Um Projeto feito em React Native, com o objetivo de criação de um aplicativo m
 
 ## Apresentação
 
-[Documentação React Native](https://docs.google.com/document/d/1uYr_c-Y1OThQSz8wubBastzkvCe-WpyzBlhvEvWB7YM/edit?usp=sharing)
+[Apresentação](https://www.canva.com/design/DAGXzmrxWu8/MQ_VjJVYQRD3BLzHWmSo5A/edit?utm_content=DAGXzmrxWu8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
