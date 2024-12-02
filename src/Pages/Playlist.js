@@ -166,7 +166,7 @@ export default function Playlist({ route, navigation }) {
         <Pressable onPress={() => navigationLink.navigate("Home")}>
           <Image source={seta} />
         </Pressable>
-        <Text style={styles.upTitle}>FROM PLAYLIST</Text>
+        <Text style={styles.upTitle}>DA PLAYLIST</Text>
         <Pressable
           onPress={() =>
             navigationLink.navigate("Menu", {

@@ -108,7 +108,7 @@ export default function Menu({ route }) {
           >
             <Image source={note} />
 
-            <Text style={styles.menuOptions}>Add to Playlist</Text>
+            <Text style={styles.menuOptions}>Adicionar a playlist</Text>
           </Pressable>
         </View>
       </ScrollView>

@@ -33,6 +33,16 @@ export default function ItemPlaylist({
     });
   };
 
+  const createTwoButtonAlert2 = (subTitle) =>
+    Alert.alert("Sucesso", subTitle, [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
+
   const adicionarMusicaPlaylist = async (idPlaylist) => {
     try {
       const isAccepted = await createTwoButtonAlert(
@@ -53,7 +63,7 @@ export default function ItemPlaylist({
 
         const response = await axios.post(`${URL}/playmusic/`, data, {headers : {'Authorization' : token , "Content-Type": "application/json"} , } );
         
-        createTwoButtonAlert("Sucesso", "Musica adicionada na playlist com sucesso !");
+        createTwoButtonAlert2("Musica adicionada na playlist com sucesso !");
         navigation.navigate('Home');
         // console.log(response.data);
 
@@ -80,23 +90,23 @@ export default function ItemPlaylist({
     } catch (error) {
       // Tratando os erros
       if (error.response) {
-        console.log("data", error.response.data.msg);
+        // console.log("data", error.response.data.msg);
         // Adicionando a mensagem de erro na tela
         // createTwoButtonAlert(error.response.data.msg);
         if(error.response.status === 400){
-          createTwoButtonAlert("Erro", `A musica ${nomeMusica} ja esta na playlits ${nomePlaylist}, por favor, selecione outra`);
+          createTwoButtonAlert("Erro", `A música ${nomeMusica} já está na ${nomePlaylist}, por favor, selecione outra`);
           }
-        console.error(error.response.status);
+        // console.error(error.response.status);
         // if (error.response.status === 401) {
         //   navigationLink.navigate("Login");
         // }
-        console.error(error.response.headers);
+        // console.error(error.response.headers);
       } else if (error.request) {
-        console.error(error.request);
+        // console.error(error.request);
       } else {
-        console.error("Erroor", error.message);
+        // console.error("Erroor", error.message);
       }
-      console.error(error.config);
+      // console.error(error.config);
     }
   };
 

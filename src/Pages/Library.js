@@ -45,20 +45,20 @@ export default function Library({ route }) {
     } catch (error) {
       // Tratando os erros
       if (error.response) {
-        console.log("data", error.response.data.msg);
+        // console.log("data", error.response.data.msg);
         // Adicionando a mensagem de erro na tela
         // createTwoButtonAlert(error.response.data.msg);
-        console.error(error.response.status);
+        // console.error(error.response.status);
         // if (error.response.status === 401) {
         //   navigationLink.navigate("Login");
         // }
-        console.error(error.response.headers);
+        // console.error(error.response.headers);
       } else if (error.request) {
-        console.error(error.request);
+        // console.error(error.request);
       } else {
-        console.error("Erroor", error.message);
+        // console.error("Erroor", error.message);
       }
-      console.error(error.config);
+      // console.error(error.config);
     }
   };
 

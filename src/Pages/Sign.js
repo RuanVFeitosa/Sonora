@@ -10,6 +10,7 @@ import {
   Alert,
   Modal,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { URL } from "@env";
 
@@ -142,71 +143,73 @@ export default function Sign(props) {
 
   return (
     <>
-      <View style={styles.container}>
-        <Image style={styles.image} source={Logo} />
-        <Text style={styles.title}>Create your account</Text>
+      {/* <ScrollView> */}
+        <View style={styles.container}>
+          <Image style={styles.image} source={Logo} />
+          <Text style={styles.title}>Create your account</Text>
 
-        {/* Formulário de Login */}
-        <TextInput
-          style={styles.input}
-          placeholder="Nome"
-          placeholderTextColor="#aaaaaa"
-          value={nome}
-          onChangeText={setNome}
-          keyboardType="default"
-          autoCapitalize="words"
-        />
+          {/* Formulário de Login */}
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
+            placeholderTextColor="#aaaaaa"
+            value={nome}
+            onChangeText={setNome}
+            keyboardType="default"
+            autoCapitalize="words"
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#aaaaaa"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#aaaaaa"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={true}
-        />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#aaaaaa"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#aaaaaa"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={true}
+          />
 
-        <Loading loading={loading}/>
+          <Loading loading={loading} />
 
-        <Pressable style={styles.button} onPress={() => cadastro()}>
-          <Text style={styles.textButton}>{title}</Text>
-        </Pressable>
+          <Pressable style={styles.button} onPress={() => cadastro()}>
+            <Text style={styles.textButton}>{title}</Text>
+          </Pressable>
 
-        <View style={styles.containerInfo}>
-          <View style={styles.containerLine}>
-            <View style={styles.line} />
-            <Text style={styles.textLine}>or continue with</Text>
-            <View style={styles.line} />
-          </View>
+          <View style={styles.containerInfo}>
+            <View style={styles.containerLine}>
+              <View style={styles.line} />
+              <Text style={styles.textLine}>or continue with</Text>
+              <View style={styles.line} />
+            </View>
 
-          <View style={styles.sites}>
-            <Image source={google} />
-            <Image source={facebook} />
-            <Image source={apple} />
-          </View>
+            <View style={styles.sites}>
+              <Image source={google} />
+              <Image source={facebook} />
+              <Image source={apple} />
+            </View>
 
-          <View>
-            <Text style={styles.account}>
-              Have an account?
-              <Pressable
-                style={styles.signUpButton}
-                onPress={() => navigation.navigate("Login")}
-              >
-                <Text style={styles.textSignUp}>Sign Up</Text>
-              </Pressable>
-            </Text>
+            <View>
+              <Text style={styles.account}>
+                Have an account?
+                <Pressable
+                  style={styles.signUpButton}
+                  onPress={() => navigation.navigate("Login")}
+                >
+                  <Text style={styles.textSignUp}>Login</Text>
+                </Pressable>
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
+      {/* </ScrollView> */}
     </>
   );
 }
@@ -230,7 +233,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     color: "white",
-    marginBottom: 10,
+    // marginBottom: 10,
   },
 
   input: {
@@ -260,7 +263,7 @@ const styles = StyleSheet.create({
   containerLine: {
     flexDirection: "row",
     alignItems: "center",
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
 
   line: {
@@ -295,9 +298,9 @@ const styles = StyleSheet.create({
   },
 
   account: {
-    alignItems: "center",
+    // alignItems: "center",
     color: "white",
-    marginTop: 20,
+    // marginTop: 20,
   },
 
   textSignUp: {

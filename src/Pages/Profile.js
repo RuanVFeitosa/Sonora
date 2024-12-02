@@ -116,7 +116,7 @@ export default function Profile() {
     >
       <Loading loading={loading} />
       <View style={styles.navBar}>
-        <Text style={styles.title}>My Profile</Text>
+        <Text style={styles.title}>Meu perfil</Text>
         {/* <Pressable
           style={styles.edit}
           onPress={() => navigation.navigate("Edit")}
@@ -134,9 +134,9 @@ export default function Profile() {
       </View>
       <View style={styles.cards}>
         <View style={styles.column}>
-          <CardProfile title={"Favorites"} icon={"heart"} pressable={"Fav"} />
+          <CardProfile title={"Favoritos"} icon={"heart"} pressable={"Fav"} />
           <CardProfile
-            title={"New Playlist"}
+            title={"Criar playlist"}
             icon={"add"}
             pressable={"Create Playlist"}
           />

@@ -253,14 +253,14 @@ export default function Home() {
           <View style={styles.header}>
             <Image style={styles.profile} src={imagemPerfil} />
             <View style={styles.textContainer}>
-              <Text style={styles.welcome}>Welcome Back!</Text>
+              <Text style={styles.welcome}>Bem vindo de volta!</Text>
               <Text style={styles.name}>{nome}</Text>
             </View>
           </View>
         </LinearGradient>
         <Loading loading={loading} />
         <View style={{ paddingLeft: 20, paddingRight: 20 }}>
-          <Text style={styles.cl}>Your Playlist</Text>
+          <Text style={styles.cl}>Suas playlists</Text>
           <View style={styles.cards}>
             <View style={styles.column}>
               {/* <Icon name="add" size={30} color={"white"} /> */}

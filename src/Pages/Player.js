@@ -181,7 +181,7 @@ export default function Player({ route }) {
         >
           <Image source={seta} />
         </Pressable>
-        <Text style={styles.title}>PLAYING FROM PLAYLIST</Text>
+        <Text style={styles.title}>TOCANDO DA PLAYLIST</Text>
         <Pressable
           onPress={() =>
             navigation.navigate("Menu", {
