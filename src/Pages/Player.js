@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 // require('dotenv').config();
-import { URL } from '@env';
+import { URL } from "@env";
 
 import Icon from "react-native-vector-icons/Ionicons";
 import seta from "../../assets/seta-e.png";
@@ -18,12 +18,21 @@ import options from "../../assets/options.png";
 import slipknot from "../../assets/slipknot.jpg";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loading from "../Components/Loading";
 
 export default function Player({ route }) {
-  const { imagem, title, artist, idPlaylist, isPlaylistMundial, idMusica, back, nomePlaylist } =
-    route.params;
+  const {
+    imagem,
+    title,
+    artist,
+    idPlaylist,
+    isPlaylistMundial,
+    idMusica,
+    back,
+    nomePlaylist,
+  } = route.params;
 
-    console.log(nomePlaylist)
+  console.log(nomePlaylist);
   const navigation = useNavigation();
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -31,6 +40,8 @@ export default function Player({ route }) {
   const [duration, setDuration] = useState(180); // duração em segundos (3 minutos)
   const [isMusicFavorite, setIsMusicFavorite] = useState(null);
   const [iconHeart, setIconHeart] = useState("heart-outline");
+  const [loading, setLoading] = useState(false);
+
   const gostarMusica = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
@@ -43,19 +54,17 @@ export default function Player({ route }) {
         const data = {
           idMusica: idMusica,
         };
-        const response = await axios.post(
-          `${URL}/musicfavorita/`,
-          data,
-          {
-            headers: {
-              Authorization: token,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        setLoading(true);
+        const response = await axios.post(`${URL}/musicfavorita/`, data, {
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+        });
+        setLoading(false);
         setIsMusicFavorite(true);
         setIconHeart("heart");
-        console.log("response aqui",response.data);
+        console.log("response aqui", response.data);
       } else {
         // Criando delete pela id da musica la no back end
         const response = await axios.delete(
@@ -65,8 +74,6 @@ export default function Player({ route }) {
         setIsMusicFavorite(false);
         setIconHeart("heart-outline");
       }
-
-      
     } catch (error) {
       // Tratando os erros
       if (error.response) {
@@ -90,21 +97,23 @@ export default function Player({ route }) {
 
   const isMusicFavoriteFunc = async () => {
     try {
-      
       const token = await AsyncStorage.getItem("token");
       console.log("idmusica aqui", idMusica);
+      // setLoading(true);
       const response = await axios.get(
-        `${URL}/musicfavorita/getbymusic/${idMusica}`, { headers: { Authorization: token } }
+        `${URL}/musicfavorita/getbymusic/${idMusica}`,
+        { headers: { Authorization: token } }
       );
-      if(response.status === 404){
+      // setLoading(false);
+      if (response.status === 404) {
         setIsMusicFavorite(false);
-        setIconHeart('heart-outline')
-      }else if( response.status === 200){
+        setIconHeart("heart-outline");
+      } else if (response.status === 200) {
         setIsMusicFavorite(true);
-        setIconHeart('heart')
+        setIconHeart("heart");
       }
 
-      console.log(response.data)
+      console.log(response.data);
 
       // console.log(response.status);
     } catch (error) {
@@ -145,7 +154,7 @@ export default function Player({ route }) {
 
   useEffect(() => {
     isMusicFavoriteFunc();
-  })
+  });
 
   const togglePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -159,6 +168,8 @@ export default function Player({ route }) {
 
   return (
     <View style={styles.container}>
+      <Loading loading={loading} />
+
       <View style={styles.opcao}>
         <Pressable
           onPress={() =>

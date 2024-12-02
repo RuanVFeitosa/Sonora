@@ -63,9 +63,14 @@ export default function Menu({ route }) {
           <Text style={styles.artist}>{artist}</Text>
         </View>
 
-        <View style={styles.options}>
-          <MenuOptions idPlaylist={idPlaylist} title={"Remove playlist"} />
-        </View>
+        <Pressable
+          onPress={() => console.log("não foi introduzida")}
+          style={styles.containerItem}
+        >
+          <Image source={note} />
+
+          <Text style={styles.menuOptions}>Deletar playlist</Text>
+        </Pressable>
       </ScrollView>
     );
   } else {
@@ -91,8 +96,7 @@ export default function Menu({ route }) {
         </View>
 
         <View style={styles.options}>
-
-            {/* <MenuOptions title={"Add to Playlist"} idMusic={idMusica} idPlaylist={idPlaylist} nameFunction={"removerMusicaPlaylist()"}/> */}
+          {/* <MenuOptions title={"Add to Playlist"} idMusic={idMusica} idPlaylist={idPlaylist} nameFunction={"removerMusicaPlaylist()"}/> */}
           <Pressable
             onPress={() =>
               navigation.navigate("Library", {
@@ -100,49 +104,12 @@ export default function Menu({ route }) {
                 nomeMusica: title,
               })
             }
+            style={styles.containerItem}
           >
-            <Text style={styles.menuOptions}>
-              <Image source={note} />
-              Add to Playlist
-            </Text>
-          </Pressable>
+            <Image source={note} />
 
-          {/* <Text style={styles.menuOptions}>
-            <Image source={remove} />
-            Remove from Playlist
-          </Text>
-          <Text style={styles.menuOptions}>
-            <Image source={queue} />
-            Add to queue
-          </Text>
-          <Text style={styles.menuOptions}>
-            <Image source={tags} />
-            Modify tags
-          </Text>
-          <Text style={styles.menuOptions}>
-            <Image source={artist} />
-            View Artist
-          </Text>
-          <Text style={styles.menuOptions}>
-            <Image source={album} />
-            View Album
-          </Text>
-          <Text style={styles.menuOptions}>
-            <Image source={credits} />
-            Show Credits
-          </Text>
-          <Text style={styles.menuOptions}>
-            <Image source={download} />
-            Download
-          </Text>
-          <Text style={styles.menuOptions}>
-            <Image source={share} />
-            Share
-          </Text>
-          <Text style={styles.menuOptions}>
-            <Image source={code} />
-            Generate QR Code
-          </Text> */}
+            <Text style={styles.menuOptions}>Add to Playlist</Text>
+          </Pressable>
         </View>
       </ScrollView>
     );
@@ -150,8 +117,22 @@ export default function Menu({ route }) {
 }
 
 const styles = StyleSheet.create({
+  containerItem: {
+    display: "flex",
+    width: "60%",
+    // borderColor: "white",
+    // borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 20,
+    flexDirection: "row",
+    alignSelf: "center",
+
+    marginTop: 10,
+  },
   container: {
     flex: 1,
+
     backgroundColor: "#000000",
   },
 
@@ -226,12 +207,13 @@ const styles = StyleSheet.create({
   },
 
   options: {
-    flexDirection: "column",
+    // flexDirection: "column",
     alignSelf: "center",
   },
 
   menuOptions: {
     color: "white",
-    padding: 20,
+    fontSize: 20,
+    // marginRight: 10,
   },
 });

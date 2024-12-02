@@ -16,11 +16,11 @@ import {
 import CardPlaylist from "../Components/CardPlaylist";
 import ItemPlaylist from "../Components/ItemPlaylist";
 // require('dotenv').config();
-import { URL } from '@env';
+import { URL } from "@env";
+import Loading from "../Components/Loading";
 
-export default function Library({route}) {
-
-  const {idMusica, nomeMusica} = route.params
+export default function Library({ route }) {
+  const { idMusica, nomeMusica } = route.params;
 
   console.log("aqui ta o id da musica", idMusica);
 
@@ -28,7 +28,7 @@ export default function Library({route}) {
   const [playlist, setPlaylist] = useState([]);
 
   const [playlistSelected, setPlaylistSelected] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   const getPlaylist = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
@@ -63,11 +63,17 @@ export default function Library({route}) {
   };
 
   useEffect(() => {
-    getPlaylist();
+    const loadData = async () => {
+      setLoading(true);
+      await getPlaylist();
+      setLoading(false);
+    };
+    loadData();
   }, []);
 
   return (
     <View style={styles.containerCard}>
+      <Loading loading={loading} />
       <Text style={styles.cl}>Selecione sua playlist</Text>
       <View style={styles.grid}>
         {playlist.map((element, index) => (

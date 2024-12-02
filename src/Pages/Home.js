@@ -147,6 +147,7 @@ export default function Home() {
     try {
       // Pegando o token do storage
       const token = await AsyncStorage.getItem("token");
+      console.log(token);
 
       if (!token) {
         console.error("Token não encontrado");
@@ -159,6 +160,8 @@ export default function Home() {
       const response = await axios.get(`${URL}/playlist/`, {
         headers: { Authorization: token },
       });
+
+      console.log(response.status);
       // setLoading(false);
 
       // Colocando as playlist no state
@@ -178,6 +181,9 @@ export default function Home() {
         // Adicionando a mensagem de erro na tela
         // createTwoButtonAlert(error.response.data.msg);
         console.error(error.response.status);
+        if(error.response.status === 401){
+          return navigation.navigate('Login');
+        }
         console.error(error.response.headers);
       } else if (error.request) {
         console.error(error.request);
